@@ -1,0 +1,278 @@
+<html>
+    <head>
+        <title>Zavalny Sport System</title>
+        <link
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <style>
+            input {
+                margin-left: 5px;
+            }
+            .language-ru {
+                display: none;
+            }
+        </style>
+    </head>
+    <body class="container">
+        <h1 class="text-center my-4">
+            <span class="language-en">Zavalny Sport System</span>
+            <span class="language-ru">Спортивная Система Завального</span>
+        </h1>
+        <div class="text-center mb-4">
+            <span class="language-en">Today is day</span>
+            <span class="language-ru">Сегодня день</span>
+            <script>
+                function dayOfYear(date) {
+                    const start = new Date(date.getFullYear(), 0, 0);
+                    const diff = date - start;
+                    const oneDay = 1000 * 60 * 60 * 24;
+                    const day = Math.floor(diff / oneDay);
+                    return day;
+                }
+
+                var d = new Date();
+                var n = dayOfYear(d) % 3;
+                document.write(n);
+            </script>
+        </div>
+
+        <button onclick="switchLanguage('en')">English</button>
+        <button onclick="switchLanguage('ru')">Русский</button>
+
+        <h2 class="mt-4">
+            <span class="language-en">Day 1</span>
+            <span class="language-ru">День 1</span>
+        </h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        <span class="language-en">Sets</span
+                        ><span class="language-ru">Сеты</span>
+                    </th>
+                    <th>
+                        <span class="language-en">Priority</span
+                        ><span class="language-ru">Приоритет</span>
+                    </th>
+                    <th>
+                        <span class="language-en">Home exercise</span
+                        ><span class="language-ru">Домашнее упражнение</span>
+                    </th>
+                    <th>
+                        <span class="language-en">Gym alternative</span
+                        ><span class="language-ru">Альтернатива в зале</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <input type="checkbox" /><input type="checkbox" /><input
+                            type="checkbox"
+                        />
+                    </td>
+                    <td>
+                        <span class="language-en">Must</span
+                        ><span class="language-ru">Обязательно</span>
+                    </td>
+                    <td>
+                        <span class="language-en">Push-ups</span
+                        ><span class="language-ru">Отжимания</span>
+                    </td>
+                    <td>
+                        <span class="language-en">Bench press</span
+                        ><span class="language-ru">Жим лёжа</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" /><input type="checkbox" /><input
+                            type="checkbox"
+                        />
+                    </td>
+                    <td>
+                        <span class="language-en">Must</span
+                        ><span class="language-ru">Обязательно</span>
+                    </td>
+                    <td>
+                        <span class="language-en">Squats / Lunges</span
+                        ><span class="language-ru">Приседания / Лангс</span>
+                    </td>
+                    <td>
+                        <span class="language-en">Leg Press</span
+                        ><span class="language-ru">Жим ногами</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" /><input type="checkbox" /><input
+                            type="checkbox"
+                        />
+                    </td>
+                    <td>
+                        <span class="language-en">Should</span
+                        ><span class="language-ru">Желательно</span>
+                    </td>
+                    <td>
+                        <span class="language-en">Dips</span
+                        ><span class="language-ru">Брусья</span>
+                    </td>
+                    <td>
+                        <span class="language-en">Triceps Push</span
+                        ><span class="language-ru">Трицепс Жим</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" /><input type="checkbox" /><input
+                            type="checkbox"
+                        />
+                    </td>
+                    <td>
+                        <span class="language-en">Can</span
+                        ><span class="language-ru">Опционально</span>
+                    </td>
+                    <td>
+                        <span class="language-en">Pike Pushups</span
+                        ><span class="language-ru">Пайк Отжимания</span>
+                    </td>
+                    <td>
+                        <span class="language-en">Should Press</span
+                        ><span class="language-ru">Жим плечами</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="mt-4">
+            <span class="language-en">Day 2</span>
+            <span class="language-ru">День 2</span>
+        </h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        <span class="language-en">Sets</span
+                        ><span class="language-ru">Сеты</span>
+                    </th>
+                    <th>
+                        <span class="language-en">Priority</span
+                        ><span class="language-ru">Приоритет</span>
+                    </th>
+                    <th>
+                        <span class="language-en">Home exercise</span
+                        ><span class="language-ru">Домашнее упражнение</span>
+                    </th>
+                    <th>
+                        <span class="language-en">Gym alternative</span
+                        ><span class="language-ru">Альтернатива в зале</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <input type="checkbox" /><input type="checkbox" /><input
+                            type="checkbox"
+                        />
+                    </td>
+                    <td>
+                        <span class="language-en">Must</span
+                        ><span class="language-ru">Обязательно</span>
+                    </td>
+                    <td>
+                        <span class="language-en">Pull ups</span
+                        ><span class="language-ru">Подтягивания</span>
+                    </td>
+                    <td>
+                        <span class="language-en">Lat Pulldowns</span
+                        ><span class="language-ru">Тяга сверху</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" /><input type="checkbox" /><input
+                            type="checkbox"
+                        />
+                    </td>
+                    <td>
+                        <span class="language-en">Must</span
+                        ><span class="language-ru">Обязательно</span>
+                    </td>
+                    <td>
+                        <span class="language-en">Leg Raises</span
+                        ><span class="language-ru">Подъемы ног</span>
+                    </td>
+                    <td>
+                        <span class="language-en">Abs Crunches</span
+                        ><span class="language-ru">Скручивания</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" /><input type="checkbox" /><input
+                            type="checkbox"
+                        />
+                    </td>
+                    <td>
+                        <span class="language-en">Should</span
+                        ><span class="language-ru">Желательно</span>
+                    </td>
+                    <td>
+                        <span class="language-en">Australian Pullups</span
+                        ><span class="language-ru"
+                            >Австралийские подтягивания</span
+                        >
+                    </td>
+                    <td>
+                        <span class="language-en">Cable Pulls</span
+                        ><span class="language-ru">Тяга троса</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" /><input type="checkbox" /><input
+                            type="checkbox"
+                        />
+                    </td>
+                    <td>
+                        <span class="language-en">Can</span
+                        ><span class="language-ru">Опционально</span>
+                    </td>
+                    <td>
+                        <span class="language-en">Biceps Curls</span
+                        ><span class="language-ru">Сгибание на бицепс</span>
+                    </td>
+                    <td>
+                        <span class="language-en">Biceps Curls</span
+                        ><span class="language-ru">Сгибание на бицепс</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="mt-4">
+            <span class="language-en">Day 0</span>
+            <span class="language-ru">День 0</span>
+        </h2>
+        <p>
+            <span class="language-en">Rest or debts</span>
+            <span class="language-ru">Отдых или долги</span>
+        </p>
+
+        <script>
+            function switchLanguage(language) {
+                const enElements = document.querySelectorAll(".language-en");
+                const ruElements = document.querySelectorAll(".language-ru");
+                if (language === "en") {
+                    enElements.forEach((el) => (el.style.display = "inline"));
+                    ruElements.forEach((el) => (el.style.display = "none"));
+                } else {
+                    enElements.forEach((el) => (el.style.display = "none"));
+                    ruElements.forEach((el) => (el.style.display = "inline"));
+                }
+            }
+        </script>
+    </body>
+</html>
