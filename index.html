@@ -6,12 +6,32 @@
             href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
             rel="stylesheet"
         />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <style>
             input {
                 margin-left: 5px;
             }
             .language-ru {
                 display: none;
+            }
+            @media (max-width: 600px) {
+                h1 {
+                    font-size: 1.5em;
+                }
+                h2 {
+                    font-size: 1.2em;
+                }
+                .table th,
+                .table td {
+                    padding: 0.5rem;
+                }
+                button {
+                    width: 49%;
+                    margin-bottom: 10px;
+                }
+                input[type="checkbox"] {
+                    margin-left: 2;
+                }
             }
         </style>
     </head>
