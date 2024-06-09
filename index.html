@@ -1,3 +1,4 @@
+<!doctype html>
 <html>
     <head>
         <title>Zavalny Sport System</title>
@@ -68,9 +69,10 @@
             <tbody>
                 <tr>
                     <td>
-                        <input type="checkbox" /><input type="checkbox" /><input
+                        <input type="checkbox" id="day1-set1" /><input
                             type="checkbox"
-                        />
+                            id="day1-set2"
+                        /><input type="checkbox" id="day1-set3" />
                     </td>
                     <td>
                         <span class="language-en">Must</span
@@ -87,9 +89,10 @@
                 </tr>
                 <tr>
                     <td>
-                        <input type="checkbox" /><input type="checkbox" /><input
+                        <input type="checkbox" id="day1-set4" /><input
                             type="checkbox"
-                        />
+                            id="day1-set5"
+                        /><input type="checkbox" id="day1-set6" />
                     </td>
                     <td>
                         <span class="language-en">Must</span
@@ -106,9 +109,10 @@
                 </tr>
                 <tr>
                     <td>
-                        <input type="checkbox" /><input type="checkbox" /><input
+                        <input type="checkbox" id="day1-set7" /><input
                             type="checkbox"
-                        />
+                            id="day1-set8"
+                        /><input type="checkbox" id="day1-set9" />
                     </td>
                     <td>
                         <span class="language-en">Should</span
@@ -125,9 +129,10 @@
                 </tr>
                 <tr>
                     <td>
-                        <input type="checkbox" /><input type="checkbox" /><input
+                        <input type="checkbox" id="day1-set10" /><input
                             type="checkbox"
-                        />
+                            id="day1-set11"
+                        /><input type="checkbox" id="day1-set12" />
                     </td>
                     <td>
                         <span class="language-en">Can</span
@@ -173,9 +178,10 @@
             <tbody>
                 <tr>
                     <td>
-                        <input type="checkbox" /><input type="checkbox" /><input
+                        <input type="checkbox" id="day2-set1" /><input
                             type="checkbox"
-                        />
+                            id="day2-set2"
+                        /><input type="checkbox" id="day2-set3" />
                     </td>
                     <td>
                         <span class="language-en">Must</span
@@ -192,9 +198,10 @@
                 </tr>
                 <tr>
                     <td>
-                        <input type="checkbox" /><input type="checkbox" /><input
+                        <input type="checkbox" id="day2-set4" /><input
                             type="checkbox"
-                        />
+                            id="day2-set5"
+                        /><input type="checkbox" id="day2-set6" />
                     </td>
                     <td>
                         <span class="language-en">Must</span
@@ -211,9 +218,10 @@
                 </tr>
                 <tr>
                     <td>
-                        <input type="checkbox" /><input type="checkbox" /><input
+                        <input type="checkbox" id="day2-set7" /><input
                             type="checkbox"
-                        />
+                            id="day2-set8"
+                        /><input type="checkbox" id="day2-set9" />
                     </td>
                     <td>
                         <span class="language-en">Should</span
@@ -232,9 +240,10 @@
                 </tr>
                 <tr>
                     <td>
-                        <input type="checkbox" /><input type="checkbox" /><input
+                        <input type="checkbox" id="day2-set10" /><input
                             type="checkbox"
-                        />
+                            id="day2-set11"
+                        /><input type="checkbox" id="day2-set12" />
                     </td>
                     <td>
                         <span class="language-en">Can</span
@@ -263,6 +272,7 @@
 
         <script>
             function switchLanguage(language) {
+                localStorage.setItem("selectedLanguage", language);
                 const enElements = document.querySelectorAll(".language-en");
                 const ruElements = document.querySelectorAll(".language-ru");
                 if (language === "en") {
@@ -273,6 +283,56 @@
                     ruElements.forEach((el) => (el.style.display = "inline"));
                 }
             }
+
+            // Function to save checkbox state to localStorage
+            function saveCheckboxState() {
+                const checkboxes = document.querySelectorAll(
+                    'input[type="checkbox"]',
+                );
+                const date = new Date().toISOString().slice(0, 10);
+                checkboxes.forEach((checkbox) => {
+                    const id = checkbox.id;
+                    const key = `${date}_${id}`;
+                    localStorage.setItem(key, checkbox.checked);
+                });
+            }
+
+            // Function to restore checkbox state from localStorage
+            function restoreCheckboxState() {
+                const checkboxes = document.querySelectorAll(
+                    'input[type="checkbox"]',
+                );
+                const date = new Date().toISOString().slice(0, 10);
+                checkboxes.forEach((checkbox) => {
+                    const id = checkbox.id;
+                    const key = `${date}_${id}`;
+                    const value = localStorage.getItem(key);
+                    if (value === "true") {
+                        checkbox.checked = true;
+                    } else {
+                        checkbox.checked = false;
+                    }
+                });
+            }
+
+            // Function to restore selected language from localStorage
+            function restoreLanguage() {
+                const selectedLanguage =
+                    localStorage.getItem("selectedLanguage") || "en";
+                switchLanguage(selectedLanguage);
+            }
+
+            // Add event listeners to checkboxes to save their state on change
+            document.addEventListener("DOMContentLoaded", () => {
+                restoreCheckboxState();
+                restoreLanguage();
+                const checkboxes = document.querySelectorAll(
+                    'input[type="checkbox"]',
+                );
+                checkboxes.forEach((checkbox) => {
+                    checkbox.addEventListener("change", saveCheckboxState);
+                });
+            });
         </script>
     </body>
 </html>
