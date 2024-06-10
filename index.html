@@ -337,6 +337,11 @@
                     const yesterday_value = localStorage.getItem(yesterday_key);
                     if (today_value === "true" || yesterday_value == "true") {
                         checkbox.checked = true;
+
+                        if (yesterday_value == "true") {
+                            // make checkbox readonly
+                            checkbox.disabled = true;
+                        }
                     }
                 });
             }
