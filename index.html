@@ -322,15 +322,21 @@
                 const checkboxes = document.querySelectorAll(
                     'input[type="checkbox"]',
                 );
-                const date = new Date().toISOString().slice(0, 10);
+
+                const date = new Date();
+                const today = date.toISOString().slice(0, 10);
+
+                date.setDate(date.getDate() - 1);
+                const yesterday = date.toISOString().slice(0, 10);
+
                 checkboxes.forEach((checkbox) => {
                     const id = checkbox.id;
-                    const key = `${date}_${id}`;
-                    const value = localStorage.getItem(key);
-                    if (value === "true") {
+                    const today_key = `${today}_${id}`;
+                    const yesterday_key = `${yesterday}_${id}`;
+                    const today_value = localStorage.getItem(today_key);
+                    const yesterday_value = localStorage.getItem(yesterday_key);
+                    if (today_value === "true" || yesterday_value == "true") {
                         checkbox.checked = true;
-                    } else {
-                        checkbox.checked = false;
                     }
                 });
             }
