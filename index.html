@@ -305,16 +305,11 @@
             }
 
             // Function to save checkbox state to localStorage
-            function saveCheckboxState() {
-                const checkboxes = document.querySelectorAll(
-                    'input[type="checkbox"]',
-                );
+            function saveCheckboxState(checkbox) {
                 const date = new Date().toISOString().slice(0, 10);
-                checkboxes.forEach((checkbox) => {
-                    const id = checkbox.id;
-                    const key = `${date}_${id}`;
-                    localStorage.setItem(key, checkbox.checked);
-                });
+                const id = checkbox.id;
+                const key = `${date}__${id}`;
+                localStorage.setItem(key, checkbox.checked);
             }
 
             // Function to restore checkbox state from localStorage
@@ -331,8 +326,8 @@
 
                 checkboxes.forEach((checkbox) => {
                     const id = checkbox.id;
-                    const today_key = `${today}_${id}`;
-                    const yesterday_key = `${yesterday}_${id}`;
+                    const today_key = `${today}__${id}`;
+                    const yesterday_key = `${yesterday}__${id}`;
                     const today_value = localStorage.getItem(today_key);
                     const yesterday_value = localStorage.getItem(yesterday_key);
                     if (today_value === "true" || yesterday_value == "true") {
@@ -361,7 +356,9 @@
                     'input[type="checkbox"]',
                 );
                 checkboxes.forEach((checkbox) => {
-                    checkbox.addEventListener("change", saveCheckboxState);
+                    checkbox.addEventListener("change", (e) => {
+                        saveCheckboxState(e.target);
+                    });
                 });
             });
         </script>
