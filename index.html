@@ -2,6 +2,32 @@
 <html>
     <head>
         <title>Zavalny Sport System</title>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta name="apple-mobile-web-app-title" content="Sport Tracker" />
+        <link rel="apple-touch-icon" href="icons/icon-192x192.png" />
+
+        <script>
+            if ("serviceWorker" in navigator) {
+                window.addEventListener("load", function () {
+                    navigator.serviceWorker.register("/sw.js").then(
+                        function (registration) {
+                            console.log(
+                                "ServiceWorker registration successful with scope: ",
+                                registration.scope,
+                            );
+                        },
+                        function (err) {
+                            console.log(
+                                "ServiceWorker registration failed: ",
+                                err,
+                            );
+                        },
+                    );
+                });
+            }
+        </script>
+
         <link
             href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
             rel="stylesheet"
