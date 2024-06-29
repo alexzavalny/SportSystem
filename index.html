@@ -69,7 +69,6 @@
         <div class="text-center mb-4">
             <span class="language-en">Today is day</span>
             <span class="language-ru">Сегодня день</span>
-            <span id="debug"></span>
             <script>
                 function dayOfYear(date) {
                     const start = new Date(date.getFullYear(), 0, 0);
@@ -83,6 +82,7 @@
                 var n = dayOfYear(d) % 3;
                 document.write(n);
             </script>
+            <div id="debug"></div>
         </div>
 
         <button onclick="switchLanguage('en')">English</button>
@@ -375,7 +375,7 @@
             document.addEventListener("DOMContentLoaded", () => {
                 //set current date time to span with id=debug
                 document.getElementById("debug").innerHTML =
-                    new Date().toISOString();
+                    "(" + new Date().toISOString() + ")";
 
                 restoreCheckboxState();
                 restoreLanguage();
