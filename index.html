@@ -78,9 +78,12 @@
                     return day;
                 }
 
-                var d = new Date();
-                var n = dayOfYear(d) % 3;
-                document.write(n);
+                function currentProgramDay(date) {
+                    const cycle = [0, 1, 0, 2];
+                    return cycle[dayOfYear(date) % cycle.length];
+                }
+
+                document.write(currentProgramDay(new Date()));
             </script>
             <div id="debug"></div>
         </div>
