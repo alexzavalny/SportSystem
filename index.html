@@ -1,394 +1,808 @@
 <!doctype html>
-<html>
+<html lang="en">
     <head>
         <title>Zavalny Sport System</title>
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="Sport Tracker" />
         <link rel="apple-touch-icon" href="icons/icon-192x192.png" />
+        <link rel="manifest" href="manifest.json" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         <script>
             if ("serviceWorker" in navigator) {
                 window.addEventListener("load", function () {
                     navigator.serviceWorker.register("/sw.js").then(
                         function (registration) {
-                            console.log(
-                                "ServiceWorker registration successful with scope: ",
-                                registration.scope,
-                            );
+                            console.log("ServiceWorker registered:", registration.scope);
                         },
                         function (err) {
-                            console.log(
-                                "ServiceWorker registration failed: ",
-                                err,
-                            );
-                        },
+                            console.log("ServiceWorker registration failed:", err);
+                        }
                     );
                 });
             }
         </script>
 
-        <link
-            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-            rel="stylesheet"
-        />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <style>
-            input {
-                margin-left: 5px;
+            :root {
+                --bg: #0d1117;
+                --surface: #161b22;
+                --surface-alt: #1c2128;
+                --border: #30363d;
+                --accent: #4493f8;
+                --accent-dim: rgba(68, 147, 248, 0.12);
+                --text: #e6edf3;
+                --text-muted: #8b949e;
+                --must: #f85149;
+                --must-bg: rgba(248, 81, 73, 0.1);
+                --must-border: rgba(248, 81, 73, 0.25);
+                --should: #d29922;
+                --should-bg: rgba(210, 153, 34, 0.1);
+                --should-border: rgba(210, 153, 34, 0.25);
+                --can: #3fb950;
+                --can-bg: rgba(63, 185, 80, 0.1);
+                --can-border: rgba(63, 185, 80, 0.25);
+                --checked: #3fb950;
+                --checked-glow: rgba(63, 185, 80, 0.25);
             }
-            .language-ru {
-                display: none;
+
+            html[data-theme="light"] {
+                --bg: #f6f8fa;
+                --surface: #ffffff;
+                --surface-alt: #eef0f3;
+                --border: #d0d7de;
+                --accent: #0969da;
+                --accent-dim: rgba(9, 105, 218, 0.1);
+                --text: #1f2328;
+                --text-muted: #636c76;
+                --must: #cf222e;
+                --must-bg: rgba(207, 34, 46, 0.07);
+                --must-border: rgba(207, 34, 46, 0.2);
+                --should: #9a6700;
+                --should-bg: rgba(154, 103, 0, 0.07);
+                --should-border: rgba(154, 103, 0, 0.2);
+                --can: #1a7f37;
+                --can-bg: rgba(26, 127, 55, 0.07);
+                --can-border: rgba(26, 127, 55, 0.2);
+                --checked: #1a7f37;
+                --checked-glow: rgba(26, 127, 55, 0.2);
             }
-            @media (max-width: 600px) {
-                h1 {
-                    font-size: 1.5em;
+
+            * { box-sizing: border-box; margin: 0; padding: 0; }
+
+            body,
+            .app-header, .app-title,
+            .today-banner, .today-badge,
+            .day-section, .day-header, .day-type-tag,
+            .exercise-card, .lang-toggle, .theme-btn {
+                transition: background-color 0.2s ease, border-color 0.2s ease,
+                            color 0.2s ease, box-shadow 0.2s ease;
+            }
+
+            body {
+                background: var(--bg);
+                color: var(--text);
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+                min-height: 100vh;
+            }
+
+            /* ── Header ── */
+            .app-header {
+                background: var(--surface);
+                border-bottom: 1px solid var(--border);
+                padding: 12px 16px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                position: sticky;
+                top: 0;
+                z-index: 10;
+                gap: 12px;
+            }
+
+            .app-title {
+                font-size: 0.95rem;
+                font-weight: 700;
+                color: var(--text);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .lang-toggle {
+                display: flex;
+                gap: 3px;
+                background: var(--bg);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                padding: 3px;
+                flex-shrink: 0;
+            }
+
+            .lang-btn {
+                background: none;
+                border: none;
+                color: var(--text-muted);
+                font-size: 0.72rem;
+                font-weight: 700;
+                padding: 4px 10px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background 0.15s, color 0.15s;
+                letter-spacing: 0.04em;
+            }
+
+            .lang-btn.active {
+                background: var(--accent);
+                color: #fff;
+            }
+
+            .header-controls {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                flex-shrink: 0;
+            }
+
+            .theme-btn {
+                background: var(--bg);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                color: var(--text-muted);
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 6px 8px;
+                flex-shrink: 0;
+            }
+
+            .theme-btn:hover { color: var(--text); }
+
+            .theme-btn svg { display: block; }
+
+            .theme-btn .icon-moon { display: none; }
+            html[data-theme="light"] .theme-btn .icon-sun { display: none; }
+            html[data-theme="light"] .theme-btn .icon-moon { display: block; }
+
+            /* ── Today banner ── */
+            .today-banner {
+                background: var(--surface-alt);
+                border-bottom: 1px solid var(--border);
+                padding: 18px 16px;
+                text-align: center;
+            }
+
+            .today-label {
+                font-size: 0.68rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.12em;
+                color: var(--text-muted);
+                margin-bottom: 10px;
+            }
+
+            .today-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                background: var(--accent-dim);
+                border: 1px solid var(--accent);
+                border-radius: 100px;
+                padding: 8px 22px;
+                font-size: 1rem;
+                font-weight: 700;
+                color: var(--accent);
+            }
+
+            .pulse-dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: var(--accent);
+                flex-shrink: 0;
+                animation: pulse 2s ease-in-out infinite;
+            }
+
+            @keyframes pulse {
+                0%, 100% { opacity: 1; transform: scale(1); }
+                50% { opacity: 0.4; transform: scale(0.7); }
+            }
+
+            /* ── Main layout ── */
+            .main-content {
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 20px 14px 40px;
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            /* ── Day sections ── */
+            .day-section {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                overflow: hidden;
+                transition: opacity 0.25s, border-color 0.25s, box-shadow 0.25s;
+            }
+
+            .day-section.active {
+                border-color: var(--accent);
+                box-shadow: 0 0 0 1px var(--accent-dim), 0 4px 24px rgba(68, 147, 248, 0.1);
+            }
+
+            .day-section.inactive {
+                opacity: 0.4;
+            }
+
+            .day-header {
+                padding: 12px 16px;
+                background: var(--surface-alt);
+                border-bottom: 1px solid var(--border);
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .day-header h2 {
+                font-size: 0.95rem;
+                font-weight: 700;
+                color: var(--text);
+                flex: 1;
+            }
+
+            .day-section.active .day-header h2 {
+                color: var(--accent);
+            }
+
+            .day-type-tag {
+                font-size: 0.65rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                background: rgba(139, 148, 158, 0.1);
+                color: var(--text-muted);
+                border-radius: 4px;
+                padding: 2px 7px;
+            }
+
+            .day-section.active .day-type-tag {
+                background: var(--accent-dim);
+                color: var(--accent);
+            }
+
+            /* ── Exercise cards ── */
+            .exercises {
+                padding: 10px;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .exercise-card {
+                background: var(--bg);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                padding: 12px 14px;
+            }
+
+            .exercise-top {
+                display: flex;
+                align-items: flex-start;
+                gap: 10px;
+                margin-bottom: 12px;
+            }
+
+            .priority-badge {
+                flex-shrink: 0;
+                font-size: 0.63rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                border-radius: 4px;
+                padding: 3px 6px;
+                margin-top: 2px;
+            }
+
+            .priority-badge.must {
+                background: var(--must-bg);
+                color: var(--must);
+                border: 1px solid var(--must-border);
+            }
+
+            .priority-badge.should {
+                background: var(--should-bg);
+                color: var(--should);
+                border: 1px solid var(--should-border);
+            }
+
+            .priority-badge.can {
+                background: var(--can-bg);
+                color: var(--can);
+                border: 1px solid var(--can-border);
+            }
+
+            .exercise-names {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .exercise-home {
+                font-size: 0.9rem;
+                font-weight: 600;
+                color: var(--text);
+                line-height: 1.3;
+            }
+
+            .exercise-gym {
+                font-size: 0.75rem;
+                color: var(--text-muted);
+                margin-top: 3px;
+            }
+
+            /* ── Set circles ── */
+            .sets-row {
+                display: flex;
+                gap: 8px;
+                align-items: center;
+            }
+
+            .set-checkbox {
+                position: absolute;
+                opacity: 0;
+                width: 0;
+                height: 0;
+                pointer-events: none;
+            }
+
+            .set-label {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 42px;
+                height: 42px;
+                border-radius: 50%;
+                border: 2px solid var(--border);
+                background: var(--surface);
+                cursor: pointer;
+                transition: background 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+                -webkit-tap-highlight-color: transparent;
+                user-select: none;
+            }
+
+            .set-label:active {
+                transform: scale(0.88);
+            }
+
+            .set-checkbox:checked + .set-label {
+                background: var(--checked);
+                border-color: var(--checked);
+                box-shadow: 0 0 12px var(--checked-glow);
+            }
+
+            .set-checkbox:checked + .set-label::after {
+                content: "";
+                display: block;
+                width: 11px;
+                height: 7px;
+                border-left: 2.5px solid #fff;
+                border-bottom: 2.5px solid #fff;
+                transform: rotate(-45deg) translate(1px, -1px);
+            }
+
+            .set-checkbox:disabled + .set-label {
+                opacity: 0.35;
+                cursor: default;
+            }
+
+            .set-checkbox:disabled + .set-label:active {
+                transform: none;
+            }
+
+            /* ── Rest day ── */
+            .rest-content {
+                padding: 24px 16px;
+                text-align: center;
+                color: var(--text-muted);
+                font-size: 0.9rem;
+                line-height: 1.6;
+            }
+
+            /* ── Language visibility ── */
+            .language-ru { display: none; }
+
+            /* ── Mobile tweaks ── */
+            @media (max-width: 400px) {
+                .set-label {
+                    width: 46px;
+                    height: 46px;
                 }
-                h2 {
-                    font-size: 1.2em;
-                }
-                .table th,
-                .table td {
-                    padding: 0.5rem;
-                }
-                button {
-                    width: 49%;
-                    margin-bottom: 10px;
-                }
-                input[type="checkbox"] {
-                    margin-left: 2;
-                }
+                .sets-row { gap: 6px; }
             }
         </style>
     </head>
-    <body class="container">
-        <h1 class="text-center my-4">
-            <span class="language-en">Zavalny Sport System</span>
-            <span class="language-ru">Спортивная Система Завального</span>
-        </h1>
-        <div class="text-center mb-4">
-            <span class="language-en">Today is day</span>
-            <span class="language-ru">Сегодня день</span>
-            <script>
-                function dayOfYear(date) {
-                    const start = new Date(date.getFullYear(), 0, 0);
-                    const diff = date - start;
-                    const oneDay = 1000 * 60 * 60 * 24;
-                    const day = Math.floor(diff / oneDay);
-                    return day;
-                }
+    <body>
 
-                function currentProgramDay(date) {
-                    const cycle = [0, 1, 0, 2];
-                    return cycle[dayOfYear(date) % cycle.length];
-                }
+        <header class="app-header">
+            <span class="app-title">
+                <span class="language-en">Zavalny Sport System</span>
+                <span class="language-ru">Система Завального</span>
+            </span>
+            <div class="header-controls">
+                <button class="theme-btn" id="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+                    <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                    </svg>
+                    <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                </button>
+                <div class="lang-toggle">
+                    <button class="lang-btn" id="btn-en" onclick="switchLanguage('en')">EN</button>
+                    <button class="lang-btn" id="btn-ru" onclick="switchLanguage('ru')">RU</button>
+                </div>
+            </div>
+        </header>
 
-                document.write(currentProgramDay(new Date()));
-            </script>
-            <div id="debug"></div>
+        <div class="today-banner">
+            <div class="today-label">
+                <span class="language-en">Today</span>
+                <span class="language-ru">Сегодня</span>
+            </div>
+            <div class="today-badge">
+                <span class="pulse-dot"></span>
+                <span>
+                    <span class="language-en">Day</span>
+                    <span class="language-ru">День</span>
+                    <span id="today-day-number">—</span>
+                </span>
+            </div>
         </div>
 
-        <button onclick="switchLanguage('en')">English</button>
-        <button onclick="switchLanguage('ru')">Русский</button>
+        <main class="main-content">
 
-        <h2 class="mt-4">
-            <span class="language-en">Day 1</span>
-            <span class="language-ru">День 1</span>
-        </h2>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>
-                        <span class="language-en">Sets</span>
-                        <span class="language-ru">Сеты</span>
-                    </th>
-                    <th>
-                        <span class="language-en">Priority</span>
-                        <span class="language-ru">Приоритет</span>
-                    </th>
-                    <th>
-                        <span class="language-en">Home exercise</span>
-                        <span class="language-ru">Домашнее упражнение</span>
-                    </th>
-                    <th>
-                        <span class="language-en">Gym alternative</span>
-                        <span class="language-ru">Альтернатива в зале</span>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <input type="checkbox" id="day1-exercise1-set1" />
-                        <input type="checkbox" id="day1-exercise1-set2" />
-                        <input type="checkbox" id="day1-exercise1-set3" />
-                        <input type="checkbox" id="day1-exercise1-set4" />
-                        <input type="checkbox" id="day1-exercise1-set5" />
-                    </td>
-                    <td>
-                        <span class="language-en">Must</span>
-                        <span class="language-ru">Обязательно</span>
-                    </td>
-                    <td>
-                        <span class="language-en">Push-ups</span>
-                        <span class="language-ru">Отжимания</span>
-                    </td>
-                    <td>
-                        <span class="language-en">Bench press</span>
-                        <span class="language-ru">Жим лёжа</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="checkbox" id="day1-exercise2-set1" />
-                        <input type="checkbox" id="day1-exercise2-set2" />
-                        <input type="checkbox" id="day1-exercise2-set3" />
-                    </td>
-                    <td>
-                        <span class="language-en">Must</span>
-                        <span class="language-ru">Обязательно</span>
-                    </td>
-                    <td>
-                        <span class="language-en">Squats / Lunges</span>
-                        <span class="language-ru">Приседания / Лангс</span>
-                    </td>
-                    <td>
-                        <span class="language-en">Leg Press</span>
-                        <span class="language-ru">Жим ногами</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="checkbox" id="day1-exercise3-set1" />
-                        <input type="checkbox" id="day1-exercise3-set2" />
-                        <input type="checkbox" id="day1-exercise3-set3" />
-                    </td>
-                    <td>
-                        <span class="language-en">Should</span>
-                        <span class="language-ru">Желательно</span>
-                    </td>
-                    <td>
-                        <span class="language-en">Dips</span>
-                        <span class="language-ru">Брусья</span>
-                    </td>
-                    <td>
-                        <span class="language-en">Triceps Push</span>
-                        <span class="language-ru">Трицепс Жим</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="checkbox" id="day1-exercise4-set1" />
-                        <input type="checkbox" id="day1-exercise4-set2" />
-                        <input type="checkbox" id="day1-exercise4-set3" />
-                    </td>
-                    <td>
-                        <span class="language-en">Can</span>
-                        <span class="language-ru">Опционально</span>
-                    </td>
-                    <td>
-                        <span class="language-en">Pike Pushups</span>
-                        <span class="language-ru">Пайк Отжимания</span>
-                    </td>
-                    <td>
-                        <span class="language-en">Should Press</span>
-                        <span class="language-ru">Жим плечами</span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+            <!-- Day 1 — Push -->
+            <section class="day-section" id="section-day1">
+                <div class="day-header">
+                    <h2>
+                        <span class="language-en">Day 1</span>
+                        <span class="language-ru">День 1</span>
+                    </h2>
+                    <span class="day-type-tag">
+                        <span class="language-en">Push</span>
+                        <span class="language-ru">Жим</span>
+                    </span>
+                </div>
+                <div class="exercises">
 
-        <h2 class="mt-4">
-            <span class="language-en">Day 2</span>
-            <span class="language-ru">День 2</span>
-        </h2>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>
-                        <span class="language-en">Sets</span>
-                        <span class="language-ru">Сеты</span>
-                    </th>
-                    <th>
-                        <span class="language-en">Priority</span>
-                        <span class="language-ru">Приоритет</span>
-                    </th>
-                    <th>
-                        <span class="language-en">Home exercise</span>
-                        <span class="language-ru">Домашнее упражнение</span>
-                    </th>
-                    <th>
-                        <span class="language-en">Gym alternative</span>
-                        <span class="language-ru">Альтернатива в зале</span>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <input type="checkbox" id="day2-exercise1-set1" />
-                        <input type="checkbox" id="day2-exercise1-set2" />
-                        <input type="checkbox" id="day2-exercise1-set3" />
-                        <input type="checkbox" id="day2-exercise1-set4" />
-                        <input type="checkbox" id="day2-exercise1-set5" />
-                    </td>
-                    <td>
-                        <span class="language-en">Must</span>
-                        <span class="language-ru">Обязательно</span>
-                    </td>
-                    <td>
-                        <span class="language-en">Pull ups</span>
-                        <span class="language-ru">Подтягивания</span>
-                    </td>
-                    <td>
-                        <span class="language-en">Lat Pulldowns</span>
-                        <span class="language-ru">Тяга сверху</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="checkbox" id="day2-exercise2-set1" />
-                        <input type="checkbox" id="day2-exercise2-set2" />
-                        <input type="checkbox" id="day2-exercise2-set3" />
-                    </td>
-                    <td>
-                        <span class="language-en">Must</span>
-                        <span class="language-ru">Обязательно</span>
-                    </td>
-                    <td>
-                        <span class="language-en">Leg Raises</span>
-                        <span class="language-ru">Подъемы ног</span>
-                    </td>
-                    <td>
-                        <span class="language-en">Abs Crunches</span>
-                        <span class="language-ru">Скручивания</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="checkbox" id="day2-exercise3-set1" />
-                        <input type="checkbox" id="day2-exercise3-set2" />
-                        <input type="checkbox" id="day2-exercise3-set3" />
-                    </td>
-                    <td>
-                        <span class="language-en">Should</span>
-                        <span class="language-ru">Желательно</span>
-                    </td>
-                    <td>
-                        <span class="language-en">Australian Pullups</span>
-                        <span class="language-ru"
-                            >Австралийские подтягивания</span
-                        >
-                    </td>
-                    <td>
-                        <span class="language-en">Cable Pulls</span>
-                        <span class="language-ru">Тяга троса</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="checkbox" id="day2-exercise4-set1" />
-                        <input type="checkbox" id="day2-exercise4-set2" />
-                        <input type="checkbox" id="day2-exercise4-set3" />
-                    </td>
-                    <td>
-                        <span class="language-en">Can</span>
-                        <span class="language-ru">Опционально</span>
-                    </td>
-                    <td>
-                        <span class="language-en">Biceps Curls</span>
-                        <span class="language-ru">Сгибание на бицепс</span>
-                    </td>
-                    <td>
-                        <span class="language-en">Biceps Curls</span>
-                        <span class="language-ru">Сгибание на бицепс</span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    <div class="exercise-card">
+                        <div class="exercise-top">
+                            <span class="priority-badge must">
+                                <span class="language-en">Must</span>
+                                <span class="language-ru">Обяз</span>
+                            </span>
+                            <div class="exercise-names">
+                                <div class="exercise-home">
+                                    <span class="language-en">Push-ups</span>
+                                    <span class="language-ru">Отжимания</span>
+                                </div>
+                                <div class="exercise-gym">
+                                    <span class="language-en">Bench press</span>
+                                    <span class="language-ru">Жим лёжа</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sets-row">
+                            <input class="set-checkbox" type="checkbox" id="day1-exercise1-set1" /><label class="set-label" for="day1-exercise1-set1"></label>
+                            <input class="set-checkbox" type="checkbox" id="day1-exercise1-set2" /><label class="set-label" for="day1-exercise1-set2"></label>
+                            <input class="set-checkbox" type="checkbox" id="day1-exercise1-set3" /><label class="set-label" for="day1-exercise1-set3"></label>
+                            <input class="set-checkbox" type="checkbox" id="day1-exercise1-set4" /><label class="set-label" for="day1-exercise1-set4"></label>
+                            <input class="set-checkbox" type="checkbox" id="day1-exercise1-set5" /><label class="set-label" for="day1-exercise1-set5"></label>
+                        </div>
+                    </div>
 
-        <h2 class="mt-4">
-            <span class="language-en">Day 0</span>
-            <span class="language-ru">День 0</span>
-        </h2>
-        <p>
-            <span class="language-en">Rest or debts</span>
-            <span class="language-ru">Отдых или долги</span>
-        </p>
+                    <div class="exercise-card">
+                        <div class="exercise-top">
+                            <span class="priority-badge must">
+                                <span class="language-en">Must</span>
+                                <span class="language-ru">Обяз</span>
+                            </span>
+                            <div class="exercise-names">
+                                <div class="exercise-home">
+                                    <span class="language-en">Squats / Lunges</span>
+                                    <span class="language-ru">Приседания / Лангс</span>
+                                </div>
+                                <div class="exercise-gym">
+                                    <span class="language-en">Leg Press</span>
+                                    <span class="language-ru">Жим ногами</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sets-row">
+                            <input class="set-checkbox" type="checkbox" id="day1-exercise2-set1" /><label class="set-label" for="day1-exercise2-set1"></label>
+                            <input class="set-checkbox" type="checkbox" id="day1-exercise2-set2" /><label class="set-label" for="day1-exercise2-set2"></label>
+                            <input class="set-checkbox" type="checkbox" id="day1-exercise2-set3" /><label class="set-label" for="day1-exercise2-set3"></label>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card">
+                        <div class="exercise-top">
+                            <span class="priority-badge should">
+                                <span class="language-en">Should</span>
+                                <span class="language-ru">Желат</span>
+                            </span>
+                            <div class="exercise-names">
+                                <div class="exercise-home">
+                                    <span class="language-en">Dips</span>
+                                    <span class="language-ru">Брусья</span>
+                                </div>
+                                <div class="exercise-gym">
+                                    <span class="language-en">Triceps Push</span>
+                                    <span class="language-ru">Трицепс Жим</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sets-row">
+                            <input class="set-checkbox" type="checkbox" id="day1-exercise3-set1" /><label class="set-label" for="day1-exercise3-set1"></label>
+                            <input class="set-checkbox" type="checkbox" id="day1-exercise3-set2" /><label class="set-label" for="day1-exercise3-set2"></label>
+                            <input class="set-checkbox" type="checkbox" id="day1-exercise3-set3" /><label class="set-label" for="day1-exercise3-set3"></label>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card">
+                        <div class="exercise-top">
+                            <span class="priority-badge can">
+                                <span class="language-en">Can</span>
+                                <span class="language-ru">Опц</span>
+                            </span>
+                            <div class="exercise-names">
+                                <div class="exercise-home">
+                                    <span class="language-en">Pike Pushups</span>
+                                    <span class="language-ru">Пайк Отжимания</span>
+                                </div>
+                                <div class="exercise-gym">
+                                    <span class="language-en">Shoulder Press</span>
+                                    <span class="language-ru">Жим плечами</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sets-row">
+                            <input class="set-checkbox" type="checkbox" id="day1-exercise4-set1" /><label class="set-label" for="day1-exercise4-set1"></label>
+                            <input class="set-checkbox" type="checkbox" id="day1-exercise4-set2" /><label class="set-label" for="day1-exercise4-set2"></label>
+                            <input class="set-checkbox" type="checkbox" id="day1-exercise4-set3" /><label class="set-label" for="day1-exercise4-set3"></label>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Day 2 — Pull -->
+            <section class="day-section" id="section-day2">
+                <div class="day-header">
+                    <h2>
+                        <span class="language-en">Day 2</span>
+                        <span class="language-ru">День 2</span>
+                    </h2>
+                    <span class="day-type-tag">
+                        <span class="language-en">Pull</span>
+                        <span class="language-ru">Тяга</span>
+                    </span>
+                </div>
+                <div class="exercises">
+
+                    <div class="exercise-card">
+                        <div class="exercise-top">
+                            <span class="priority-badge must">
+                                <span class="language-en">Must</span>
+                                <span class="language-ru">Обяз</span>
+                            </span>
+                            <div class="exercise-names">
+                                <div class="exercise-home">
+                                    <span class="language-en">Pull ups</span>
+                                    <span class="language-ru">Подтягивания</span>
+                                </div>
+                                <div class="exercise-gym">
+                                    <span class="language-en">Lat Pulldowns</span>
+                                    <span class="language-ru">Тяга сверху</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sets-row">
+                            <input class="set-checkbox" type="checkbox" id="day2-exercise1-set1" /><label class="set-label" for="day2-exercise1-set1"></label>
+                            <input class="set-checkbox" type="checkbox" id="day2-exercise1-set2" /><label class="set-label" for="day2-exercise1-set2"></label>
+                            <input class="set-checkbox" type="checkbox" id="day2-exercise1-set3" /><label class="set-label" for="day2-exercise1-set3"></label>
+                            <input class="set-checkbox" type="checkbox" id="day2-exercise1-set4" /><label class="set-label" for="day2-exercise1-set4"></label>
+                            <input class="set-checkbox" type="checkbox" id="day2-exercise1-set5" /><label class="set-label" for="day2-exercise1-set5"></label>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card">
+                        <div class="exercise-top">
+                            <span class="priority-badge must">
+                                <span class="language-en">Must</span>
+                                <span class="language-ru">Обяз</span>
+                            </span>
+                            <div class="exercise-names">
+                                <div class="exercise-home">
+                                    <span class="language-en">Leg Raises</span>
+                                    <span class="language-ru">Подъемы ног</span>
+                                </div>
+                                <div class="exercise-gym">
+                                    <span class="language-en">Abs Crunches</span>
+                                    <span class="language-ru">Скручивания</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sets-row">
+                            <input class="set-checkbox" type="checkbox" id="day2-exercise2-set1" /><label class="set-label" for="day2-exercise2-set1"></label>
+                            <input class="set-checkbox" type="checkbox" id="day2-exercise2-set2" /><label class="set-label" for="day2-exercise2-set2"></label>
+                            <input class="set-checkbox" type="checkbox" id="day2-exercise2-set3" /><label class="set-label" for="day2-exercise2-set3"></label>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card">
+                        <div class="exercise-top">
+                            <span class="priority-badge should">
+                                <span class="language-en">Should</span>
+                                <span class="language-ru">Желат</span>
+                            </span>
+                            <div class="exercise-names">
+                                <div class="exercise-home">
+                                    <span class="language-en">Australian Pullups</span>
+                                    <span class="language-ru">Австралийские подтягивания</span>
+                                </div>
+                                <div class="exercise-gym">
+                                    <span class="language-en">Cable Pulls</span>
+                                    <span class="language-ru">Тяга троса</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sets-row">
+                            <input class="set-checkbox" type="checkbox" id="day2-exercise3-set1" /><label class="set-label" for="day2-exercise3-set1"></label>
+                            <input class="set-checkbox" type="checkbox" id="day2-exercise3-set2" /><label class="set-label" for="day2-exercise3-set2"></label>
+                            <input class="set-checkbox" type="checkbox" id="day2-exercise3-set3" /><label class="set-label" for="day2-exercise3-set3"></label>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card">
+                        <div class="exercise-top">
+                            <span class="priority-badge can">
+                                <span class="language-en">Can</span>
+                                <span class="language-ru">Опц</span>
+                            </span>
+                            <div class="exercise-names">
+                                <div class="exercise-home">
+                                    <span class="language-en">Biceps Curls</span>
+                                    <span class="language-ru">Сгибание на бицепс</span>
+                                </div>
+                                <div class="exercise-gym">
+                                    <span class="language-en">Biceps Curls</span>
+                                    <span class="language-ru">Сгибание на бицепс</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sets-row">
+                            <input class="set-checkbox" type="checkbox" id="day2-exercise4-set1" /><label class="set-label" for="day2-exercise4-set1"></label>
+                            <input class="set-checkbox" type="checkbox" id="day2-exercise4-set2" /><label class="set-label" for="day2-exercise4-set2"></label>
+                            <input class="set-checkbox" type="checkbox" id="day2-exercise4-set3" /><label class="set-label" for="day2-exercise4-set3"></label>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Day 0 — Rest -->
+            <section class="day-section" id="section-day0">
+                <div class="day-header">
+                    <h2>
+                        <span class="language-en">Day 0</span>
+                        <span class="language-ru">День 0</span>
+                    </h2>
+                    <span class="day-type-tag">
+                        <span class="language-en">Rest</span>
+                        <span class="language-ru">Отдых</span>
+                    </span>
+                </div>
+                <div class="rest-content">
+                    <span class="language-en">Rest or make up missed sessions</span>
+                    <span class="language-ru">Отдых или долги</span>
+                </div>
+            </section>
+
+        </main>
 
         <script>
+            function dayOfYear(date) {
+                const start = new Date(date.getFullYear(), 0, 0);
+                const diff = date - start;
+                const oneDay = 1000 * 60 * 60 * 24;
+                return Math.floor(diff / oneDay);
+            }
+
+            function currentProgramDay(date) {
+                const cycle = [0, 1, 0, 2];
+                return cycle[dayOfYear(date) % cycle.length];
+            }
+
             function switchLanguage(language) {
                 localStorage.setItem("selectedLanguage", language);
-                const enElements = document.querySelectorAll(".language-en");
-                const ruElements = document.querySelectorAll(".language-ru");
-                if (language === "en") {
-                    enElements.forEach((el) => (el.style.display = "inline"));
-                    ruElements.forEach((el) => (el.style.display = "none"));
-                } else {
-                    enElements.forEach((el) => (el.style.display = "none"));
-                    ruElements.forEach((el) => (el.style.display = "inline"));
-                }
+                const show = language === "en" ? "language-en" : "language-ru";
+                const hide = language === "en" ? "language-ru" : "language-en";
+                document.querySelectorAll("." + show).forEach((el) => (el.style.display = "inline"));
+                document.querySelectorAll("." + hide).forEach((el) => (el.style.display = "none"));
+                document.getElementById("btn-en").classList.toggle("active", language === "en");
+                document.getElementById("btn-ru").classList.toggle("active", language === "ru");
             }
 
-            // Function to save checkbox state to localStorage
             function saveCheckboxState(checkbox) {
                 const date = new Date().toISOString().slice(0, 10);
-                const id = checkbox.id;
-                const key = `${date}__${id}`;
-                localStorage.setItem(key, checkbox.checked);
+                localStorage.setItem(`${date}__${checkbox.id}`, checkbox.checked);
             }
 
-            // Function to restore checkbox state from localStorage
             function restoreCheckboxState() {
-                const checkboxes = document.querySelectorAll(
-                    'input[type="checkbox"]',
-                );
-
+                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
                 const date = new Date();
                 const today = date.toISOString().slice(0, 10);
-
                 date.setDate(date.getDate() - 1);
                 const yesterday = date.toISOString().slice(0, 10);
-
                 checkboxes.forEach((checkbox) => {
                     const id = checkbox.id;
-                    const today_key = `${today}__${id}`;
-                    const yesterday_key = `${yesterday}__${id}`;
-                    const today_value = localStorage.getItem(today_key);
-                    const yesterday_value = localStorage.getItem(yesterday_key);
-                    if (today_value === "true" || yesterday_value == "true") {
+                    const todayVal = localStorage.getItem(`${today}__${id}`);
+                    const yestVal = localStorage.getItem(`${yesterday}__${id}`);
+                    if (todayVal === "true" || yestVal === "true") {
                         checkbox.checked = true;
-
-                        if (yesterday_value == "true") {
-                            // make checkbox readonly
+                        if (yestVal === "true") {
                             checkbox.disabled = true;
                         }
                     }
                 });
             }
 
-            // Function to restore selected language from localStorage
             function restoreLanguage() {
-                const selectedLanguage =
-                    localStorage.getItem("selectedLanguage") || "en";
-                switchLanguage(selectedLanguage);
+                switchLanguage(localStorage.getItem("selectedLanguage") || "en");
             }
 
-            // Add event listeners to checkboxes to save their state on change
-            document.addEventListener("DOMContentLoaded", () => {
-                //set current date time to span with id=debug
-                document.getElementById("debug").innerHTML =
-                    "(" + new Date().toISOString() + ")";
+            function toggleTheme() {
+                const current = document.documentElement.getAttribute("data-theme");
+                switchTheme(current === "light" ? "dark" : "light");
+            }
 
+            function switchTheme(theme) {
+                localStorage.setItem("selectedTheme", theme);
+                if (theme === "light") {
+                    document.documentElement.setAttribute("data-theme", "light");
+                } else {
+                    document.documentElement.removeAttribute("data-theme");
+                }
+            }
+
+            function restoreTheme() {
+                switchTheme(localStorage.getItem("selectedTheme") || "dark");
+            }
+
+            document.addEventListener("DOMContentLoaded", () => {
+                const today = currentProgramDay(new Date());
+                document.getElementById("today-day-number").textContent = today;
+
+                const sectionMap = { 0: "section-day0", 1: "section-day1", 2: "section-day2" };
+                Object.entries(sectionMap).forEach(([day, id]) => {
+                    document.getElementById(id).classList.add(
+                        parseInt(day) === today ? "active" : "inactive"
+                    );
+                });
+
+                restoreTheme();
                 restoreCheckboxState();
                 restoreLanguage();
-                const checkboxes = document.querySelectorAll(
-                    'input[type="checkbox"]',
-                );
-                checkboxes.forEach((checkbox) => {
-                    checkbox.addEventListener("change", (e) => {
-                        saveCheckboxState(e.target);
-                    });
+
+                document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+                    checkbox.addEventListener("change", (e) => saveCheckboxState(e.target));
                 });
             });
         </script>
