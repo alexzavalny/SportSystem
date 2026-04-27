@@ -1,4 +1,4 @@
-const CACHE_NAME = "v4"; // Change this version whenever you update your PWA
+const CACHE_NAME = "v5"; // Change this version whenever you update your PWA
 const urlsToCache = [
   "index.html",
   "icons/icon-192x192.png",
