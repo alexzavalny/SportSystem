@@ -411,6 +411,90 @@
                 line-height: 1.6;
             }
 
+            /* ── Advanced button ── */
+            .advanced-btn {
+                display: block;
+                margin: 4px auto 0;
+                background: none;
+                border: none;
+                color: var(--text-muted);
+                font-size: 0.8rem;
+                cursor: pointer;
+                padding: 8px 14px;
+                border-radius: 6px;
+                transition: color 0.15s;
+            }
+
+            .advanced-btn:hover { color: var(--text); }
+
+            /* ── Modal ── */
+            .modal-backdrop {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.55);
+                z-index: 100;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+            }
+
+            .modal-backdrop.open { display: flex; }
+
+            .modal {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 24px;
+                width: 100%;
+                max-width: 320px;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .modal-title {
+                font-size: 1rem;
+                font-weight: 700;
+                color: var(--text);
+            }
+
+            .modal-actions {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .btn-danger {
+                background: var(--must-bg);
+                border: 1px solid var(--must-border);
+                color: var(--must);
+                border-radius: 8px;
+                padding: 11px 16px;
+                font-size: 0.88rem;
+                font-weight: 600;
+                cursor: pointer;
+                width: 100%;
+                transition: background 0.15s;
+            }
+
+            .btn-danger:hover { filter: brightness(1.15); }
+
+            .btn-ghost {
+                background: none;
+                border: 1px solid var(--border);
+                color: var(--text-muted);
+                border-radius: 8px;
+                padding: 11px 16px;
+                font-size: 0.88rem;
+                font-weight: 600;
+                cursor: pointer;
+                width: 100%;
+                transition: background 0.15s, color 0.15s;
+            }
+
+            .btn-ghost:hover { background: var(--surface-alt); color: var(--text); }
+
             /* ── Language visibility ── */
             .language-ru { display: none; }
 
@@ -715,7 +799,31 @@
                 </div>
             </section>
 
+            <button class="advanced-btn" onclick="openAdvanced()">
+                <span class="language-en">Advanced</span>
+                <span class="language-ru">Настройки</span>
+            </button>
+
         </main>
+
+        <div class="modal-backdrop" id="advanced-modal" onclick="closeAdvanced()">
+            <div class="modal" onclick="event.stopPropagation()">
+                <div class="modal-title">
+                    <span class="language-en">Advanced</span>
+                    <span class="language-ru">Настройки</span>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-danger" onclick="clearAll()">
+                        <span class="language-en">Clear all</span>
+                        <span class="language-ru">Очистить всё</span>
+                    </button>
+                    <button class="btn-ghost" onclick="closeAdvanced()">
+                        <span class="language-en">Cancel</span>
+                        <span class="language-ru">Отмена</span>
+                    </button>
+                </div>
+            </div>
+        </div>
 
         <script>
             function dayOfYear(date) {
@@ -784,6 +892,25 @@
 
             function restoreTheme() {
                 switchTheme(localStorage.getItem("selectedTheme") || "dark");
+            }
+
+            function openAdvanced() {
+                document.getElementById("advanced-modal").classList.add("open");
+            }
+
+            function closeAdvanced() {
+                document.getElementById("advanced-modal").classList.remove("open");
+            }
+
+            function clearAll() {
+                Object.keys(localStorage)
+                    .filter(key => /^\d{4}-\d{2}-\d{2}__/.test(key))
+                    .forEach(key => localStorage.removeItem(key));
+                document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                    cb.checked = false;
+                    cb.disabled = false;
+                });
+                closeAdvanced();
             }
 
             document.addEventListener("DOMContentLoaded", () => {
