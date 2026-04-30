@@ -495,6 +495,25 @@
 
             .btn-ghost:hover { background: var(--surface-alt); color: var(--text); }
 
+            /* ── Critical sets (first exercise, sets 1–3) ── */
+            .sets-divider {
+                width: 1px;
+                height: 26px;
+                background: var(--border);
+                flex-shrink: 0;
+                align-self: center;
+                margin: 0 2px;
+            }
+
+            .critical-set {
+                border: 2px solid #e8793a;
+                box-shadow: 0 0 0 3px rgba(232, 121, 58, 0.2);
+            }
+
+            .bonus-set {
+                opacity: 0.38;
+            }
+
             /* ── Language visibility ── */
             .language-ru { display: none; }
 
@@ -565,7 +584,7 @@
                 </div>
                 <div class="exercises">
 
-                    <div class="exercise-card">
+                    <div class="exercise-card first-exercise">
                         <div class="exercise-top">
                             <span class="priority-badge must">
                                 <span class="language-en">Must</span>
@@ -583,11 +602,12 @@
                             </div>
                         </div>
                         <div class="sets-row">
-                            <input class="set-checkbox" type="checkbox" id="day1-exercise1-set1" /><label class="set-label" for="day1-exercise1-set1"></label>
-                            <input class="set-checkbox" type="checkbox" id="day1-exercise1-set2" /><label class="set-label" for="day1-exercise1-set2"></label>
-                            <input class="set-checkbox" type="checkbox" id="day1-exercise1-set3" /><label class="set-label" for="day1-exercise1-set3"></label>
-                            <input class="set-checkbox" type="checkbox" id="day1-exercise1-set4" /><label class="set-label" for="day1-exercise1-set4"></label>
-                            <input class="set-checkbox" type="checkbox" id="day1-exercise1-set5" /><label class="set-label" for="day1-exercise1-set5"></label>
+                            <input class="set-checkbox" type="checkbox" id="day1-exercise1-set1" /><label class="set-label critical-set" for="day1-exercise1-set1"></label>
+                            <input class="set-checkbox" type="checkbox" id="day1-exercise1-set2" /><label class="set-label critical-set" for="day1-exercise1-set2"></label>
+                            <input class="set-checkbox" type="checkbox" id="day1-exercise1-set3" /><label class="set-label critical-set" for="day1-exercise1-set3"></label>
+                            <span class="sets-divider"></span>
+                            <input class="set-checkbox" type="checkbox" id="day1-exercise1-set4" /><label class="set-label bonus-set" for="day1-exercise1-set4"></label>
+                            <input class="set-checkbox" type="checkbox" id="day1-exercise1-set5" /><label class="set-label bonus-set" for="day1-exercise1-set5"></label>
                         </div>
                     </div>
 
@@ -680,7 +700,7 @@
                 </div>
                 <div class="exercises">
 
-                    <div class="exercise-card">
+                    <div class="exercise-card first-exercise">
                         <div class="exercise-top">
                             <span class="priority-badge must">
                                 <span class="language-en">Must</span>
@@ -698,11 +718,12 @@
                             </div>
                         </div>
                         <div class="sets-row">
-                            <input class="set-checkbox" type="checkbox" id="day2-exercise1-set1" /><label class="set-label" for="day2-exercise1-set1"></label>
-                            <input class="set-checkbox" type="checkbox" id="day2-exercise1-set2" /><label class="set-label" for="day2-exercise1-set2"></label>
-                            <input class="set-checkbox" type="checkbox" id="day2-exercise1-set3" /><label class="set-label" for="day2-exercise1-set3"></label>
-                            <input class="set-checkbox" type="checkbox" id="day2-exercise1-set4" /><label class="set-label" for="day2-exercise1-set4"></label>
-                            <input class="set-checkbox" type="checkbox" id="day2-exercise1-set5" /><label class="set-label" for="day2-exercise1-set5"></label>
+                            <input class="set-checkbox" type="checkbox" id="day2-exercise1-set1" /><label class="set-label critical-set" for="day2-exercise1-set1"></label>
+                            <input class="set-checkbox" type="checkbox" id="day2-exercise1-set2" /><label class="set-label critical-set" for="day2-exercise1-set2"></label>
+                            <input class="set-checkbox" type="checkbox" id="day2-exercise1-set3" /><label class="set-label critical-set" for="day2-exercise1-set3"></label>
+                            <span class="sets-divider"></span>
+                            <input class="set-checkbox" type="checkbox" id="day2-exercise1-set4" /><label class="set-label bonus-set" for="day2-exercise1-set4"></label>
+                            <input class="set-checkbox" type="checkbox" id="day2-exercise1-set5" /><label class="set-label bonus-set" for="day2-exercise1-set5"></label>
                         </div>
                     </div>
 
