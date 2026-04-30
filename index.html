@@ -878,7 +878,7 @@
             ];
 
             function getEffortTag(pct) {
-                return EFFORT_TIERS.find(t => pct >= t.min && pct <= t.max);
+                return EFFORT_TIERS.find(t => pct >= t.min && pct <= t.max) ?? EFFORT_TIERS[0];
             }
 
             function dayOfYear(date) {
