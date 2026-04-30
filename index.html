@@ -929,6 +929,7 @@
                 document.querySelectorAll("." + hide).forEach((el) => (el.style.display = "none"));
                 document.getElementById("btn-en").classList.toggle("active", language === "en");
                 document.getElementById("btn-ru").classList.toggle("active", language === "ru");
+                updateEffortTag();
             }
 
             function saveCheckboxState(checkbox) {
@@ -994,6 +995,7 @@
                     cb.disabled = false;
                 });
                 closeAdvanced();
+                updateEffortTag();
             }
 
             document.addEventListener("DOMContentLoaded", () => {
@@ -1009,8 +1011,8 @@
 
                 restoreTheme();
                 restoreCheckboxState();
-                updateEffortTag();
                 restoreLanguage();
+                updateEffortTag();
 
                 document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
                     checkbox.addEventListener("change", (e) => {
