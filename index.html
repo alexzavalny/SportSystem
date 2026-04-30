@@ -496,6 +496,45 @@
 
             .btn-ghost:hover { background: var(--surface-alt); color: var(--text); }
 
+            /* ── Offset control ── */
+            .offset-row {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                font-size: 0.88rem;
+                color: var(--text);
+            }
+
+            .offset-control {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .offset-btn {
+                background: var(--surface-alt);
+                border: 1px solid var(--border);
+                color: var(--text);
+                border-radius: 6px;
+                width: 32px;
+                height: 32px;
+                cursor: pointer;
+                font-size: 1.1rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: background 0.15s;
+            }
+
+            .offset-btn:hover { background: var(--border); }
+
+            #offset-value {
+                min-width: 28px;
+                text-align: center;
+                font-weight: 700;
+                font-size: 0.95rem;
+            }
+
             /* ── Critical sets (first exercise, sets 1–3) ── */
             .sets-divider {
                 width: 1px;
@@ -707,6 +746,24 @@
                 </div>
             </section>
 
+            <!-- Day 0 — Rest -->
+            <section class="day-section" id="section-day0">
+                <div class="day-header">
+                    <h2>
+                        <span class="language-en">Day 0</span>
+                        <span class="language-ru">День 0</span>
+                    </h2>
+                    <span class="day-type-tag">
+                        <span class="language-en">Rest</span>
+                        <span class="language-ru">Отдых</span>
+                    </span>
+                </div>
+                <div class="rest-content">
+                    <span class="language-en">Rest or make up missed sessions</span>
+                    <span class="language-ru">Отдых или долги</span>
+                </div>
+            </section>
+
             <!-- Day 2 — Pull -->
             <section class="day-section" id="section-day2">
                 <div class="day-header">
@@ -823,8 +880,8 @@
                 </div>
             </section>
 
-            <!-- Day 0 — Rest -->
-            <section class="day-section" id="section-day0">
+            <!-- Day 0b — Rest (after push) -->
+            <section class="day-section" id="section-day0b">
                 <div class="day-header">
                     <h2>
                         <span class="language-en">Day 0</span>
@@ -855,6 +912,17 @@
                     <span class="language-ru">Настройки</span>
                 </div>
                 <div class="modal-actions">
+                    <div class="offset-row">
+                        <span>
+                            <span class="language-en">Offset day count</span>
+                            <span class="language-ru">Смещение дней</span>
+                        </span>
+                        <div class="offset-control">
+                            <button class="offset-btn" onclick="changeOffset(-1)">−</button>
+                            <span id="offset-value">0</span>
+                            <button class="offset-btn" onclick="changeOffset(1)">+</button>
+                        </div>
+                    </div>
                     <button class="btn-danger" onclick="clearAll()">
                         <span class="language-en">Clear all</span>
                         <span class="language-ru">Очистить всё</span>
@@ -883,7 +951,7 @@
 
             function updateEffortTag() {
                 const activeSection = document.querySelector('.day-section.active');
-                if (!activeSection || activeSection.id === 'section-day0') return;
+                if (!activeSection) return;
 
                 const checkboxes = activeSection.querySelectorAll('input[type="checkbox"]');
                 const total = checkboxes.length;
@@ -917,8 +985,32 @@
             }
 
             function currentProgramDay(date) {
-                const cycle = [0, 1, 0, 2];
-                return cycle[dayOfYear(date) % cycle.length];
+                const offset = parseInt(localStorage.getItem('dayOffset') || '0');
+                return (((dayOfYear(date) + offset) % 4) + 4) % 4;
+            }
+
+            function applyProgramDay() {
+                const today = currentProgramDay(new Date());
+                document.getElementById("today-day-number").textContent = today;
+                const sectionMap = { 0: "section-day0b", 1: "section-day1", 2: "section-day0", 3: "section-day2" };
+                Object.values(sectionMap).forEach(id => {
+                    document.getElementById(id).classList.remove('active', 'inactive');
+                });
+                Object.entries(sectionMap).forEach(([day, id]) => {
+                    document.getElementById(id).classList.add(parseInt(day) === today ? "active" : "inactive");
+                });
+                updateEffortTag();
+            }
+
+            function restoreOffset() {
+                document.getElementById('offset-value').textContent = localStorage.getItem('dayOffset') || '0';
+            }
+
+            function changeOffset(delta) {
+                const next = (parseInt(localStorage.getItem('dayOffset') || '0')) + delta;
+                localStorage.setItem('dayOffset', next);
+                document.getElementById('offset-value').textContent = next;
+                applyProgramDay();
             }
 
             function switchLanguage(language) {
@@ -999,20 +1091,11 @@
             }
 
             document.addEventListener("DOMContentLoaded", () => {
-                const today = currentProgramDay(new Date());
-                document.getElementById("today-day-number").textContent = today;
-
-                const sectionMap = { 0: "section-day0", 1: "section-day1", 2: "section-day2" };
-                Object.entries(sectionMap).forEach(([day, id]) => {
-                    document.getElementById(id).classList.add(
-                        parseInt(day) === today ? "active" : "inactive"
-                    );
-                });
-
                 restoreTheme();
                 restoreCheckboxState();
                 restoreLanguage();
-                updateEffortTag();
+                restoreOffset();
+                applyProgramDay();
 
                 document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
                     checkbox.addEventListener("change", (e) => {
