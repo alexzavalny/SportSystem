@@ -868,6 +868,19 @@
         </div>
 
         <script>
+            const EFFORT_TIERS = [
+                { min: 0,   max: 0,   en: "🦥 Lazy Sloth",          ru: "🦥 Диванный Боец" },
+                { min: 1,   max: 20,  en: "🥱 Just Showed Up",       ru: "🥱 Зашёл Поглазеть" },
+                { min: 21,  max: 50,  en: "🤷 Half-Hearted Hero",    ru: "🤷 Ну Типа Старался" },
+                { min: 51,  max: 79,  en: "💦 Sweaty Mess",          ru: "💦 Уже Не Позор" },
+                { min: 80,  max: 99,  en: "😤 One More Set, Coward", ru: "😤 Ещё Подход, Слабак" },
+                { min: 100, max: 100, en: "🔥 Absolute Unit",        ru: "🔥 Красавчик" },
+            ];
+
+            function getEffortTag(pct) {
+                return EFFORT_TIERS.find(t => pct >= t.min && pct <= t.max);
+            }
+
             function dayOfYear(date) {
                 const start = new Date(date.getFullYear(), 0, 0);
                 const diff = date - start;
