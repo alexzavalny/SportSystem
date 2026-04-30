@@ -1009,10 +1009,14 @@
 
                 restoreTheme();
                 restoreCheckboxState();
+                updateEffortTag();
                 restoreLanguage();
 
                 document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
-                    checkbox.addEventListener("change", (e) => saveCheckboxState(e.target));
+                    checkbox.addEventListener("change", (e) => {
+                        saveCheckboxState(e.target);
+                        updateEffortTag();
+                    });
                 });
             });
         </script>
