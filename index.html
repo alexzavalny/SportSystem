@@ -881,6 +881,34 @@
                 return EFFORT_TIERS.find(t => pct >= t.min && pct <= t.max) ?? EFFORT_TIERS[0];
             }
 
+            function updateEffortTag() {
+                const activeSection = document.querySelector('.day-section.active');
+                if (!activeSection || activeSection.id === 'section-day0') return;
+
+                const checkboxes = activeSection.querySelectorAll('input[type="checkbox"]');
+                const total = checkboxes.length;
+                if (total === 0) return;
+
+                const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
+                const pct = Math.round((checked / total) * 100);
+                const tier = getEffortTag(pct);
+
+                const header = activeSection.querySelector('.day-header');
+                let tag = header.querySelector('#effort-tag');
+                if (!tag) {
+                    tag = document.createElement('span');
+                    tag.id = 'effort-tag';
+                    header.appendChild(tag);
+                }
+
+                tag.className = 'effort-tag' + (pct === 100 ? ' effort-tag--done' : '');
+                tag.innerHTML = `<span class="language-en">${tier.en}</span><span class="language-ru">${tier.ru}</span>`;
+
+                const lang = localStorage.getItem('selectedLanguage') || 'en';
+                tag.querySelector('.language-en').style.display = lang === 'en' ? 'inline' : 'none';
+                tag.querySelector('.language-ru').style.display = lang === 'ru' ? 'inline' : 'none';
+            }
+
             function dayOfYear(date) {
                 const start = new Date(date.getFullYear(), 0, 0);
                 const diff = date - start;
