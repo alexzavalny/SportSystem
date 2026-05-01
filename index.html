@@ -939,7 +939,7 @@
             function getEffortTag(done, total) {
                 const remaining = total - done;
                 if (done === 0)        return { en: "🦥 Lazy Sloth",          ru: "🦥 Диванный Боец" };
-                if (done <= 3)         return { en: "🥱 Just Showed Up",       ru: "🥱 Зашёл Поглазеть" };
+                if (done <= 2)         return { en: "🥱 Just Showed Up",       ru: "🥱 Зашёл Поглазеть" };
                 if (done < total / 2)  return { en: "🤷 Half-Hearted Hero",    ru: "🤷 Ну Типа Старался" };
                 if (remaining > 1)     return { en: "💦 Sweaty Mess",          ru: "💦 Уже Не Позор" };
                 if (remaining === 1)   return { en: "😤 One More Set, Coward", ru: "😤 Ещё Подход, Слабак" };
