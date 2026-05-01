@@ -936,17 +936,14 @@
         </div>
 
         <script>
-            const EFFORT_TIERS = [
-                { min: 0,   max: 0,   en: "🦥 Lazy Sloth",          ru: "🦥 Диванный Боец" },
-                { min: 1,   max: 20,  en: "🥱 Just Showed Up",       ru: "🥱 Зашёл Поглазеть" },
-                { min: 21,  max: 50,  en: "🤷 Half-Hearted Hero",    ru: "🤷 Ну Типа Старался" },
-                { min: 51,  max: 79,  en: "💦 Sweaty Mess",          ru: "💦 Уже Не Позор" },
-                { min: 80,  max: 99,  en: "😤 One More Set, Coward", ru: "😤 Ещё Подход, Слабак" },
-                { min: 100, max: 100, en: "🔥 Absolute Unit",        ru: "🔥 Красавчик" },
-            ];
-
-            function getEffortTag(pct) {
-                return EFFORT_TIERS.find(t => pct >= t.min && pct <= t.max) ?? EFFORT_TIERS[0];
+            function getEffortTag(done, total) {
+                const remaining = total - done;
+                if (done === 0)        return { en: "🦥 Lazy Sloth",          ru: "🦥 Диванный Боец" };
+                if (done <= 3)         return { en: "🥱 Just Showed Up",       ru: "🥱 Зашёл Поглазеть" };
+                if (done < total / 2)  return { en: "🤷 Half-Hearted Hero",    ru: "🤷 Ну Типа Старался" };
+                if (remaining > 1)     return { en: "💦 Sweaty Mess",          ru: "💦 Уже Не Позор" };
+                if (remaining === 1)   return { en: "😤 One More Set, Coward", ru: "😤 Ещё Подход, Слабак" };
+                return                        { en: "🔥 Absolute Unit",        ru: "🔥 Красавчик" };
             }
 
             function updateEffortTag() {
@@ -958,8 +955,7 @@
                 if (total === 0) return;
 
                 const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
-                const pct = Math.round((checked / total) * 100);
-                const tier = getEffortTag(pct);
+                const tier = getEffortTag(checked, total);
 
                 const header = activeSection.querySelector('.day-header');
                 let tag = header.querySelector('#effort-tag');
@@ -969,7 +965,7 @@
                     header.appendChild(tag);
                 }
 
-                tag.className = 'effort-tag' + (pct === 100 ? ' effort-tag--done' : '');
+                tag.className = 'effort-tag' + (checked === total ? ' effort-tag--done' : '');
                 tag.innerHTML = `<span class="language-en">${tier.en}</span><span class="language-ru">${tier.ru}</span>`;
 
                 const lang = localStorage.getItem('selectedLanguage') || 'en';
