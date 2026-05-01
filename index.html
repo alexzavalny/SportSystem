@@ -947,30 +947,50 @@
             }
 
             function updateEffortTag() {
+                document.querySelectorAll('#effort-tag').forEach(el => el.remove());
+
                 const activeSection = document.querySelector('.day-section.active');
                 if (!activeSection) return;
 
+                const sectionMap = { 0: "section-day0b", 1: "section-day1", 2: "section-day0", 3: "section-day2" };
                 const checkboxes = activeSection.querySelectorAll('input[type="checkbox"]');
-                const total = checkboxes.length;
-                if (total === 0) return;
 
-                const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
-                const tier = getEffortTag(checked, total);
+                let targetSection, total, checked;
 
-                const header = activeSection.querySelector('.day-header');
-                let tag = header.querySelector('#effort-tag');
-                if (!tag) {
-                    tag = document.createElement('span');
-                    tag.id = 'effort-tag';
-                    header.appendChild(tag);
+                if (checkboxes.length === 0) {
+                    // Rest day: show effort tag for yesterday's workout section
+                    const today = currentProgramDay(new Date());
+                    const yesterdayDay = (today - 1 + 4) % 4;
+                    targetSection = document.getElementById(sectionMap[yesterdayDay]);
+                    if (!targetSection) return;
+
+                    const yboxes = targetSection.querySelectorAll('input[type="checkbox"]');
+                    total = yboxes.length;
+                    if (total === 0) return;
+
+                    const d = new Date();
+                    d.setDate(d.getDate() - 1);
+                    const yesterday = d.toISOString().slice(0, 10);
+                    checked = Array.from(yboxes).filter(cb =>
+                        localStorage.getItem(`${yesterday}__${cb.id}`) === 'true'
+                    ).length;
+                } else {
+                    targetSection = activeSection;
+                    total = checkboxes.length;
+                    checked = Array.from(checkboxes).filter(cb => cb.checked).length;
                 }
 
+                const tier = getEffortTag(checked, total);
+                const tag = document.createElement('span');
+                tag.id = 'effort-tag';
                 tag.className = 'effort-tag' + (checked === total ? ' effort-tag--done' : '');
                 tag.innerHTML = `<span class="language-en">${tier.en}</span><span class="language-ru">${tier.ru}</span>`;
 
                 const lang = localStorage.getItem('selectedLanguage') || 'en';
                 tag.querySelector('.language-en').style.display = lang === 'en' ? 'inline' : 'none';
                 tag.querySelector('.language-ru').style.display = lang === 'ru' ? 'inline' : 'none';
+
+                targetSection.querySelector('.day-header').appendChild(tag);
             }
 
             function dayOfYear(date) {
