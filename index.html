@@ -1007,7 +1007,8 @@
 
             function applyProgramDay() {
                 const today = currentProgramDay(new Date());
-                document.getElementById("today-day-number").textContent = today;
+                const displayDay = { 0: 0, 1: 1, 2: 0, 3: 2 }[today];
+                document.getElementById("today-day-number").textContent = displayDay;
                 const sectionMap = { 0: "section-day0b", 1: "section-day1", 2: "section-day0", 3: "section-day2" };
                 Object.values(sectionMap).forEach(id => {
                     document.getElementById(id).classList.remove('active', 'inactive');
