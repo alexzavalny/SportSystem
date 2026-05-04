@@ -10,16 +10,84 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         <script>
+            let deferredInstallPrompt = null;
+            let pendingServiceWorker = null;
+            let serviceWorkerRefreshing = false;
+
+            function showPwaBanner(id) {
+                if (id === "pwa-update-banner") {
+                    hidePwaBanner("pwa-install-banner");
+                } else if (id === "pwa-install-banner") {
+                    const updateBanner = document.getElementById("pwa-update-banner");
+                    if (updateBanner && updateBanner.classList.contains("show")) return;
+                }
+
+                const banner = document.getElementById(id);
+                if (banner) banner.classList.add("show");
+            }
+
+            function hidePwaBanner(id) {
+                const banner = document.getElementById(id);
+                if (banner) banner.classList.remove("show");
+            }
+
+            function installPwa() {
+                if (!deferredInstallPrompt) return;
+                deferredInstallPrompt.prompt();
+                deferredInstallPrompt.userChoice.finally(() => {
+                    deferredInstallPrompt = null;
+                    hidePwaBanner("pwa-install-banner");
+                });
+            }
+
+            function applyPwaUpdate() {
+                if (!pendingServiceWorker) return;
+                pendingServiceWorker.postMessage({ type: "SKIP_WAITING" });
+            }
+
+            window.addEventListener("beforeinstallprompt", (event) => {
+                event.preventDefault();
+                deferredInstallPrompt = event;
+                showPwaBanner("pwa-install-banner");
+            });
+
+            window.addEventListener("appinstalled", () => {
+                deferredInstallPrompt = null;
+                hidePwaBanner("pwa-install-banner");
+            });
+
             if ("serviceWorker" in navigator) {
                 window.addEventListener("load", function () {
                     navigator.serviceWorker.register("/sw.js").then(
                         function (registration) {
                             console.log("ServiceWorker registered:", registration.scope);
+                            if (registration.waiting) {
+                                pendingServiceWorker = registration.waiting;
+                                showPwaBanner("pwa-update-banner");
+                            }
+
+                            registration.addEventListener("updatefound", () => {
+                                const installingWorker = registration.installing;
+                                if (!installingWorker) return;
+
+                                installingWorker.addEventListener("statechange", () => {
+                                    if (installingWorker.state === "installed" && navigator.serviceWorker.controller) {
+                                        pendingServiceWorker = installingWorker;
+                                        showPwaBanner("pwa-update-banner");
+                                    }
+                                });
+                            });
                         },
                         function (err) {
                             console.log("ServiceWorker registration failed:", err);
                         }
                     );
+                });
+
+                navigator.serviceWorker.addEventListener("controllerchange", () => {
+                    if (serviceWorkerRefreshing) return;
+                    serviceWorkerRefreshing = true;
+                    window.location.reload();
                 });
             }
         </script>
@@ -441,6 +509,68 @@
             }
 
             .modal-backdrop.open { display: flex; }
+
+            /* ── PWA banners ── */
+            .pwa-banner {
+                position: fixed;
+                left: 12px;
+                right: 12px;
+                bottom: 12px;
+                z-index: 120;
+                display: none;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+                max-width: 576px;
+                margin: 0 auto;
+                background: var(--surface);
+                border: 1px solid var(--accent);
+                border-radius: 10px;
+                box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+                padding: 10px 10px 10px 14px;
+            }
+
+            .pwa-banner.show {
+                display: flex;
+            }
+
+            .pwa-banner-text {
+                color: var(--text);
+                font-size: 0.84rem;
+                font-weight: 600;
+                line-height: 1.25;
+            }
+
+            .pwa-banner-actions {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                flex-shrink: 0;
+            }
+
+            .pwa-banner-btn {
+                background: var(--accent);
+                border: 1px solid var(--accent);
+                border-radius: 7px;
+                color: #fff;
+                cursor: pointer;
+                font-size: 0.78rem;
+                font-weight: 700;
+                padding: 7px 10px;
+                white-space: nowrap;
+            }
+
+            .pwa-banner-dismiss {
+                background: none;
+                border: 1px solid var(--border);
+                border-radius: 7px;
+                color: var(--text-muted);
+                cursor: pointer;
+                font-size: 0.78rem;
+                font-weight: 700;
+                padding: 7px 10px;
+                white-space: nowrap;
+            }
 
             .modal {
                 background: var(--surface);
@@ -932,6 +1062,40 @@
                         <span class="language-ru">Отмена</span>
                     </button>
                 </div>
+            </div>
+        </div>
+
+        <div class="pwa-banner" id="pwa-install-banner" role="status" aria-live="polite">
+            <div class="pwa-banner-text">
+                <span class="language-en">Install Sport Tracker for faster offline access.</span>
+                <span class="language-ru">Установить Sport Tracker для быстрого офлайн-доступа.</span>
+            </div>
+            <div class="pwa-banner-actions">
+                <button class="pwa-banner-dismiss" onclick="hidePwaBanner('pwa-install-banner')">
+                    <span class="language-en">Not now</span>
+                    <span class="language-ru">Не сейчас</span>
+                </button>
+                <button class="pwa-banner-btn" onclick="installPwa()">
+                    <span class="language-en">Install</span>
+                    <span class="language-ru">Установить</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="pwa-banner" id="pwa-update-banner" role="status" aria-live="polite">
+            <div class="pwa-banner-text">
+                <span class="language-en">A new version is ready.</span>
+                <span class="language-ru">Новая версия готова.</span>
+            </div>
+            <div class="pwa-banner-actions">
+                <button class="pwa-banner-dismiss" onclick="hidePwaBanner('pwa-update-banner')">
+                    <span class="language-en">Later</span>
+                    <span class="language-ru">Позже</span>
+                </button>
+                <button class="pwa-banner-btn" onclick="applyPwaUpdate()">
+                    <span class="language-en">Update</span>
+                    <span class="language-ru">Обновить</span>
+                </button>
             </div>
         </div>
 
