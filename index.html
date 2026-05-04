@@ -971,8 +971,10 @@
                     const d = new Date();
                     d.setDate(d.getDate() - 1);
                     const yesterday = d.toISOString().slice(0, 10);
+                    const todayStr = new Date().toISOString().slice(0, 10);
                     checked = Array.from(yboxes).filter(cb =>
-                        localStorage.getItem(`${yesterday}__${cb.id}`) === 'true'
+                        localStorage.getItem(`${yesterday}__${cb.id}`) === 'true' ||
+                        localStorage.getItem(`${todayStr}__${cb.id}`) === 'true'
                     ).length;
                 } else {
                     targetSection = activeSection;
@@ -1005,6 +1007,32 @@
                 return (((dayOfYear(date) + offset) % 4) + 4) % 4;
             }
 
+            let pastDaySection = null;
+            let pastDayFadeTimer = null;
+            let pastDayIsLit = false;
+
+            function litPastDay() {
+                if (!pastDaySection) return;
+                clearTimeout(pastDayFadeTimer);
+                pastDayFadeTimer = null;
+                pastDaySection.classList.remove('inactive');
+                pastDayIsLit = true;
+            }
+
+            function fadePastDayWithDelay() {
+                if (!pastDaySection || !pastDayIsLit) return;
+                clearTimeout(pastDayFadeTimer);
+                pastDayFadeTimer = setTimeout(() => {
+                    if (pastDaySection) pastDaySection.classList.add('inactive');
+                    pastDayIsLit = false;
+                }, 2000);
+            }
+
+            function flashPastDay() {
+                litPastDay();
+                fadePastDayWithDelay();
+            }
+
             function applyProgramDay() {
                 const today = currentProgramDay(new Date());
                 const displayDay = { 0: 0, 1: 1, 2: 0, 3: 2 }[today];
@@ -1016,6 +1044,13 @@
                 Object.entries(sectionMap).forEach(([day, id]) => {
                     document.getElementById(id).classList.add(parseInt(day) === today ? "active" : "inactive");
                 });
+                const activeSection = document.getElementById(sectionMap[today]);
+                if (activeSection.querySelectorAll('input[type="checkbox"]').length === 0) {
+                    const yesterdayDay = (today - 1 + 4) % 4;
+                    pastDaySection = document.getElementById(sectionMap[yesterdayDay]);
+                } else {
+                    pastDaySection = null;
+                }
                 updateEffortTag();
             }
 
@@ -1118,8 +1153,20 @@
                     checkbox.addEventListener("change", (e) => {
                         saveCheckboxState(e.target);
                         updateEffortTag();
+                        if (pastDaySection && pastDaySection.contains(e.target)) {
+                            flashPastDay();
+                        }
                     });
                 });
+
+                if (pastDaySection) {
+                    pastDaySection.querySelectorAll('.set-label').forEach(label => {
+                        label.addEventListener('mousedown', () => litPastDay());
+                        label.addEventListener('touchstart', () => litPastDay(), { passive: true });
+                    });
+                    document.addEventListener('mouseup', () => fadePastDayWithDelay());
+                    document.addEventListener('touchend', () => fadePastDayWithDelay(), { passive: true });
+                }
             });
         </script>
     </body>
