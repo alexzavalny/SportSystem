@@ -10,6 +10,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         <script>
+            (function () {
+                var t = localStorage.getItem("selectedTheme");
+                if (t === "light") document.documentElement.setAttribute("data-theme", "light");
+            })();
+
             let deferredInstallPrompt = null;
             let pendingServiceWorker = null;
             let serviceWorkerRefreshing = false;
@@ -715,9 +720,76 @@
                 }
                 .sets-row { gap: 6px; }
             }
+
+            /* ── Splash screen ── */
+            #splash {
+                position: fixed;
+                inset: 0;
+                z-index: 9999;
+                background: var(--bg);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 18px;
+                transition: opacity 0.45s ease, visibility 0.45s ease;
+            }
+
+            #splash.splash-hidden {
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+            }
+
+            .splash-logo {
+                width: 88px;
+                height: 88px;
+                border-radius: 22px;
+                box-shadow: 0 4px 32px rgba(68, 147, 248, 0.25);
+                animation: splashPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+            }
+
+            .splash-title {
+                font-size: 1.15rem;
+                font-weight: 700;
+                color: var(--text);
+                letter-spacing: 0.01em;
+                animation: splashFadeUp 0.4s 0.1s ease both;
+            }
+
+            .splash-tagline {
+                font-size: 0.72rem;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                color: var(--text-muted);
+                animation: splashFadeUp 0.4s 0.2s ease both;
+            }
+
+            @keyframes splashPop {
+                from { opacity: 0; transform: scale(0.75); }
+                to   { opacity: 1; transform: scale(1); }
+            }
+
+            @keyframes splashFadeUp {
+                from { opacity: 0; transform: translateY(8px); }
+                to   { opacity: 1; transform: translateY(0); }
+            }
         </style>
     </head>
     <body>
+
+        <div id="splash">
+            <img class="splash-logo" src="icons/icon-192x192.png" alt="" />
+            <div class="splash-title">
+                <span class="language-en">Zavalny Sport System</span>
+                <span class="language-ru">Система Завального</span>
+            </div>
+            <div class="splash-tagline">
+                <span class="language-en">Workout Tracker</span>
+                <span class="language-ru">Трекер тренировок</span>
+            </div>
+        </div>
 
         <header class="app-header">
             <span class="app-title">
@@ -1312,6 +1384,14 @@
                 restoreLanguage();
                 restoreOffset();
                 applyProgramDay();
+
+                const splash = document.getElementById("splash");
+                if (splash) {
+                    setTimeout(() => {
+                        splash.classList.add("splash-hidden");
+                        splash.addEventListener("transitionend", () => splash.remove(), { once: true });
+                    }, 1200);
+                }
 
                 document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
                     checkbox.addEventListener("change", (e) => {
