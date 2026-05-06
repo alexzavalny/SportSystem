@@ -706,6 +706,7 @@
 
             /* ── Language visibility ── */
             .language-ru { display: none; }
+            .language-eo { display: none; }
 
             /* ── Mobile tweaks ── */
             @media (max-width: 400px) {
@@ -723,6 +724,7 @@
             <span class="app-title">
                 <span class="language-en">Zavalny Sport System</span>
                 <span class="language-ru">Система Завального</span>
+                <span class="language-eo">Sporta Sistemo de Zavalny</span>
             </span>
             <div class="header-controls">
                 <button class="theme-btn" id="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
@@ -739,6 +741,7 @@
                 <div class="lang-toggle">
                     <button class="lang-btn" id="btn-en" onclick="switchLanguage('en')">EN</button>
                     <button class="lang-btn" id="btn-ru" onclick="switchLanguage('ru')">RU</button>
+                    <button class="lang-btn" id="btn-eo" onclick="switchLanguage('eo')">EO</button>
                 </div>
             </div>
         </header>
@@ -747,12 +750,14 @@
             <div class="today-label">
                 <span class="language-en">Today</span>
                 <span class="language-ru">Сегодня</span>
+                <span class="language-eo">Hodiaŭ</span>
             </div>
             <div class="today-badge">
                 <span class="pulse-dot"></span>
                 <span>
                     <span class="language-en">Day</span>
                     <span class="language-ru">День</span>
+                    <span class="language-eo">Tago</span>
                     <span id="today-day-number">—</span>
                 </span>
             </div>
@@ -766,10 +771,12 @@
                     <h2>
                         <span class="language-en">Day 1</span>
                         <span class="language-ru">День 1</span>
+                        <span class="language-eo">Tago 1</span>
                     </h2>
                     <span class="day-type-tag">
                         <span class="language-en">Push</span>
                         <span class="language-ru">Жим</span>
+                        <span class="language-eo">Puŝo</span>
                     </span>
                 </div>
                 <div class="exercises">
@@ -779,15 +786,18 @@
                             <span class="priority-badge must">
                                 <span class="language-en">Must</span>
                                 <span class="language-ru">Обяз</span>
+                                <span class="language-eo">Nepre</span>
                             </span>
                             <div class="exercise-names">
                                 <div class="exercise-home">
                                     <span class="language-en">Push-ups</span>
                                     <span class="language-ru">Отжимания</span>
+                                    <span class="language-eo">Premleviĝoj</span>
                                 </div>
                                 <div class="exercise-gym">
                                     <span class="language-en">Bench press</span>
                                     <span class="language-ru">Жим лёжа</span>
+                                    <span class="language-eo">Benka Premo</span>
                                 </div>
                             </div>
                         </div>
@@ -806,15 +816,18 @@
                             <span class="priority-badge must">
                                 <span class="language-en">Must</span>
                                 <span class="language-ru">Обяз</span>
+                                <span class="language-eo">Nepre</span>
                             </span>
                             <div class="exercise-names">
                                 <div class="exercise-home">
                                     <span class="language-en">Squats / Lunges</span>
                                     <span class="language-ru">Приседания / Лангс</span>
+                                    <span class="language-eo">Skvatoj / Lunĝoj</span>
                                 </div>
                                 <div class="exercise-gym">
                                     <span class="language-en">Leg Press</span>
                                     <span class="language-ru">Жим ногами</span>
+                                    <span class="language-eo">Krura Premo</span>
                                 </div>
                             </div>
                         </div>
@@ -830,15 +843,18 @@
                             <span class="priority-badge should">
                                 <span class="language-en">Should</span>
                                 <span class="language-ru">Желат</span>
+                                <span class="language-eo">Prefere</span>
                             </span>
                             <div class="exercise-names">
                                 <div class="exercise-home">
                                     <span class="language-en">Dips</span>
                                     <span class="language-ru">Брусья</span>
+                                    <span class="language-eo">Tremensoj</span>
                                 </div>
                                 <div class="exercise-gym">
                                     <span class="language-en">Triceps Push</span>
                                     <span class="language-ru">Трицепс Жим</span>
+                                    <span class="language-eo">Tricepsa Premo</span>
                                 </div>
                             </div>
                         </div>
@@ -854,15 +870,18 @@
                             <span class="priority-badge can">
                                 <span class="language-en">Can</span>
                                 <span class="language-ru">Опц</span>
+                                <span class="language-eo">Eblas</span>
                             </span>
                             <div class="exercise-names">
                                 <div class="exercise-home">
                                     <span class="language-en">Pike Pushups</span>
                                     <span class="language-ru">Пайк Отжимания</span>
+                                    <span class="language-eo">Pikaj Premleviĝoj</span>
                                 </div>
                                 <div class="exercise-gym">
                                     <span class="language-en">Shoulder Press</span>
                                     <span class="language-ru">Жим плечами</span>
+                                    <span class="language-eo">Ŝultra Premo</span>
                                 </div>
                             </div>
                         </div>
@@ -882,15 +901,18 @@
                     <h2>
                         <span class="language-en">Day 0</span>
                         <span class="language-ru">День 0</span>
+                        <span class="language-eo">Tago 0</span>
                     </h2>
                     <span class="day-type-tag">
                         <span class="language-en">Rest</span>
                         <span class="language-ru">Отдых</span>
+                        <span class="language-eo">Ripozo</span>
                     </span>
                 </div>
                 <div class="rest-content">
                     <span class="language-en">Rest or make up missed sessions. You can also do cardio.</span>
                     <span class="language-ru">Отдых или долги. Можно сделать кардио.</span>
+                    <span class="language-eo">Ripozu aŭ kompensu mankantajn sesiojn. Vi ankaŭ povas fari kardion.</span>
                 </div>
             </section>
 
@@ -900,10 +922,12 @@
                     <h2>
                         <span class="language-en">Day 2</span>
                         <span class="language-ru">День 2</span>
+                        <span class="language-eo">Tago 2</span>
                     </h2>
                     <span class="day-type-tag">
                         <span class="language-en">Pull</span>
                         <span class="language-ru">Тяга</span>
+                        <span class="language-eo">Tiro</span>
                     </span>
                 </div>
                 <div class="exercises">
@@ -913,15 +937,18 @@
                             <span class="priority-badge must">
                                 <span class="language-en">Must</span>
                                 <span class="language-ru">Обяз</span>
+                                <span class="language-eo">Nepre</span>
                             </span>
                             <div class="exercise-names">
                                 <div class="exercise-home">
                                     <span class="language-en">Pull ups</span>
                                     <span class="language-ru">Подтягивания</span>
+                                    <span class="language-eo">Tirleviĝoj</span>
                                 </div>
                                 <div class="exercise-gym">
                                     <span class="language-en">Lat Pulldowns</span>
                                     <span class="language-ru">Тяга сверху</span>
+                                    <span class="language-eo">Dorsaj Tiroj</span>
                                 </div>
                             </div>
                         </div>
@@ -940,15 +967,18 @@
                             <span class="priority-badge must">
                                 <span class="language-en">Must</span>
                                 <span class="language-ru">Обяз</span>
+                                <span class="language-eo">Nepre</span>
                             </span>
                             <div class="exercise-names">
                                 <div class="exercise-home">
                                     <span class="language-en">Leg Raises</span>
                                     <span class="language-ru">Подъемы ног</span>
+                                    <span class="language-eo">Kruraj Levoj</span>
                                 </div>
                                 <div class="exercise-gym">
                                     <span class="language-en">Abs Crunches</span>
                                     <span class="language-ru">Скручивания</span>
+                                    <span class="language-eo">Abdomenaj Fleksoj</span>
                                 </div>
                             </div>
                         </div>
@@ -964,15 +994,18 @@
                             <span class="priority-badge should">
                                 <span class="language-en">Should</span>
                                 <span class="language-ru">Желат</span>
+                                <span class="language-eo">Prefere</span>
                             </span>
                             <div class="exercise-names">
                                 <div class="exercise-home">
                                     <span class="language-en">Australian Pullups</span>
                                     <span class="language-ru">Австралийские подтягивания</span>
+                                    <span class="language-eo">Aŭstraliaj Tiroj</span>
                                 </div>
                                 <div class="exercise-gym">
                                     <span class="language-en">Cable Pulls</span>
                                     <span class="language-ru">Тяга троса</span>
+                                    <span class="language-eo">Ŝnura Tiro</span>
                                 </div>
                             </div>
                         </div>
@@ -988,15 +1021,18 @@
                             <span class="priority-badge can">
                                 <span class="language-en">Can</span>
                                 <span class="language-ru">Опц</span>
+                                <span class="language-eo">Eblas</span>
                             </span>
                             <div class="exercise-names">
                                 <div class="exercise-home">
                                     <span class="language-en">Biceps Curls</span>
                                     <span class="language-ru">Сгибание на бицепс</span>
+                                    <span class="language-eo">Bicepsaj Fleksoj</span>
                                 </div>
                                 <div class="exercise-gym">
                                     <span class="language-en">Biceps Curls</span>
                                     <span class="language-ru">Сгибание на бицепс</span>
+                                    <span class="language-eo">Bicepsaj Fleksoj</span>
                                 </div>
                             </div>
                         </div>
@@ -1016,21 +1052,25 @@
                     <h2>
                         <span class="language-en">Day 0</span>
                         <span class="language-ru">День 0</span>
+                        <span class="language-eo">Tago 0</span>
                     </h2>
                     <span class="day-type-tag">
                         <span class="language-en">Rest</span>
                         <span class="language-ru">Отдых</span>
+                        <span class="language-eo">Ripozo</span>
                     </span>
                 </div>
                 <div class="rest-content">
                     <span class="language-en">Rest or make up missed sessions. You can also do cardio.</span>
                     <span class="language-ru">Отдых или долги. Можно сделать кардио.</span>
+                    <span class="language-eo">Ripozu aŭ kompensu mankantajn sesiojn. Vi ankaŭ povas fari kardion.</span>
                 </div>
             </section>
 
             <button class="advanced-btn" onclick="openAdvanced()">
                 <span class="language-en">Advanced</span>
                 <span class="language-ru">Настройки</span>
+                <span class="language-eo">Altnivela</span>
             </button>
 
         </main>
@@ -1040,12 +1080,14 @@
                 <div class="modal-title">
                     <span class="language-en">Advanced</span>
                     <span class="language-ru">Настройки</span>
+                    <span class="language-eo">Altnivela</span>
                 </div>
                 <div class="modal-actions">
                     <div class="offset-row">
                         <span>
                             <span class="language-en">Offset day count</span>
                             <span class="language-ru">Смещение дней</span>
+                            <span class="language-eo">Kompensita tagkalkulo</span>
                         </span>
                         <div class="offset-control">
                             <button class="offset-btn" onclick="changeOffset(-1)">−</button>
@@ -1056,10 +1098,12 @@
                     <button class="btn-danger" onclick="clearAll()">
                         <span class="language-en">Clear all</span>
                         <span class="language-ru">Очистить всё</span>
+                        <span class="language-eo">Forviŝi ĉion</span>
                     </button>
                     <button class="btn-ghost" onclick="closeAdvanced()">
                         <span class="language-en">Cancel</span>
                         <span class="language-ru">Отмена</span>
+                        <span class="language-eo">Nuligi</span>
                     </button>
                 </div>
             </div>
@@ -1069,15 +1113,18 @@
             <div class="pwa-banner-text">
                 <span class="language-en">Install Sport Tracker for faster offline access.</span>
                 <span class="language-ru">Установить Sport Tracker для быстрого офлайн-доступа.</span>
+                <span class="language-eo">Instali Sport Tracker por pli rapida senreta aliro.</span>
             </div>
             <div class="pwa-banner-actions">
                 <button class="pwa-banner-dismiss" onclick="hidePwaBanner('pwa-install-banner')">
                     <span class="language-en">Not now</span>
                     <span class="language-ru">Не сейчас</span>
+                    <span class="language-eo">Ne nun</span>
                 </button>
                 <button class="pwa-banner-btn" onclick="installPwa()">
                     <span class="language-en">Install</span>
                     <span class="language-ru">Установить</span>
+                    <span class="language-eo">Instali</span>
                 </button>
             </div>
         </div>
@@ -1086,15 +1133,18 @@
             <div class="pwa-banner-text">
                 <span class="language-en">A new version is ready.</span>
                 <span class="language-ru">Новая версия готова.</span>
+                <span class="language-eo">Nova versio estas preta.</span>
             </div>
             <div class="pwa-banner-actions">
                 <button class="pwa-banner-dismiss" onclick="hidePwaBanner('pwa-update-banner')">
                     <span class="language-en">Later</span>
                     <span class="language-ru">Позже</span>
+                    <span class="language-eo">Poste</span>
                 </button>
                 <button class="pwa-banner-btn" onclick="applyPwaUpdate()">
                     <span class="language-en">Update</span>
                     <span class="language-ru">Обновить</span>
+                    <span class="language-eo">Ĝisdatigi</span>
                 </button>
             </div>
         </div>
@@ -1102,12 +1152,12 @@
         <script>
             function getEffortTag(done, total) {
                 const remaining = total - done;
-                if (done === 0)        return { en: "🦥 Lazy Sloth",          ru: "🦥 Диванный Боец" };
-                if (done <= 2)         return { en: "🥱 Just Showed Up",       ru: "🥱 Зашёл Поглазеть" };
-                if (done < 8)          return { en: "🤷 Half-Hearted Hero",    ru: "🤷 Ну Типа Старался" };
-                if (remaining > 1)     return { en: "💦 Sweaty Mess",          ru: "💦 Уже Не Позор" };
-                if (remaining === 1)   return { en: "😤 One More Set, Coward", ru: "😤 Ещё Подход, Слабак" };
-                return                        { en: "🔥 Absolute Unit",        ru: "🔥 Красавчик" };
+                if (done === 0)        return { en: "🦥 Lazy Sloth",          ru: "🦥 Диванный Боец",     eo: "🦥 Pigra Lazulo" };
+                if (done <= 2)         return { en: "🥱 Just Showed Up",       ru: "🥱 Зашёл Поглазеть",  eo: "🥱 Nur Aperis" };
+                if (done < 8)          return { en: "🤷 Half-Hearted Hero",    ru: "🤷 Ну Типа Старался",  eo: "🤷 Duonkora Heroo" };
+                if (remaining > 1)     return { en: "💦 Sweaty Mess",          ru: "💦 Уже Не Позор",      eo: "💦 Ŝvita Malordo" };
+                if (remaining === 1)   return { en: "😤 One More Set, Coward", ru: "😤 Ещё Подход, Слабак", eo: "😤 Ankoraŭ Aro, Timulo" };
+                return                        { en: "🔥 Absolute Unit",        ru: "🔥 Красавчик",          eo: "🔥 Absoluta Unuo" };
             }
 
             function updateEffortTag() {
@@ -1150,11 +1200,12 @@
                 const tag = document.createElement('span');
                 tag.id = 'effort-tag';
                 tag.className = 'effort-tag' + (checked === total ? ' effort-tag--done' : '');
-                tag.innerHTML = `<span class="language-en">${tier.en}</span><span class="language-ru">${tier.ru}</span>`;
+                tag.innerHTML = `<span class="language-en">${tier.en}</span><span class="language-ru">${tier.ru}</span><span class="language-eo">${tier.eo}</span>`;
 
                 const lang = localStorage.getItem('selectedLanguage') || 'en';
-                tag.querySelector('.language-en').style.display = lang === 'en' ? 'inline' : 'none';
-                tag.querySelector('.language-ru').style.display = lang === 'ru' ? 'inline' : 'none';
+                ["en", "ru", "eo"].forEach(l => {
+                    tag.querySelector('.language-' + l).style.display = l === lang ? 'inline' : 'none';
+                });
 
                 targetSection.querySelector('.day-header').appendChild(tag);
             }
@@ -1231,12 +1282,11 @@
 
             function switchLanguage(language) {
                 localStorage.setItem("selectedLanguage", language);
-                const show = language === "en" ? "language-en" : "language-ru";
-                const hide = language === "en" ? "language-ru" : "language-en";
-                document.querySelectorAll("." + show).forEach((el) => (el.style.display = "inline"));
-                document.querySelectorAll("." + hide).forEach((el) => (el.style.display = "none"));
-                document.getElementById("btn-en").classList.toggle("active", language === "en");
-                document.getElementById("btn-ru").classList.toggle("active", language === "ru");
+                ["en", "ru", "eo"].forEach(lang => {
+                    const display = lang === language ? "inline" : "none";
+                    document.querySelectorAll(".language-" + lang).forEach(el => el.style.display = display);
+                    document.getElementById("btn-" + lang).classList.toggle("active", lang === language);
+                });
                 updateEffortTag();
             }
 
