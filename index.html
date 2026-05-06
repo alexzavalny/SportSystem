@@ -707,6 +707,45 @@
             /* ── Language visibility ── */
             .language-ru { display: none; }
             .language-eo { display: none; }
+            .language-lv { display: none; }
+
+            /* ── Lang visibility checkboxes in modal ── */
+            .lang-vis-row {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                font-size: 0.88rem;
+                color: var(--text);
+                gap: 8px;
+            }
+
+            .lang-vis-checks {
+                display: flex;
+                gap: 10px;
+                flex-shrink: 0;
+            }
+
+            .lang-vis-label {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                font-size: 0.78rem;
+                font-weight: 700;
+                color: var(--text-muted);
+                cursor: pointer;
+                letter-spacing: 0.04em;
+                user-select: none;
+            }
+
+            .lang-vis-label input[type="checkbox"] {
+                accent-color: var(--accent);
+                cursor: pointer;
+            }
+
+            .lang-vis-label:has(input:disabled) {
+                opacity: 0.4;
+                cursor: default;
+            }
 
             /* ── Mobile tweaks ── */
             @media (max-width: 400px) {
@@ -725,6 +764,7 @@
                 <span class="language-en">Zavalny Sport System</span>
                 <span class="language-ru">Система Завального</span>
                 <span class="language-eo">Sporta Sistemo de Zavalny</span>
+                <span class="language-lv">Zavalny Sporta Sistēma</span>
             </span>
             <div class="header-controls">
                 <button class="theme-btn" id="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
@@ -742,6 +782,7 @@
                     <button class="lang-btn" id="btn-en" onclick="switchLanguage('en')">EN</button>
                     <button class="lang-btn" id="btn-ru" onclick="switchLanguage('ru')">RU</button>
                     <button class="lang-btn" id="btn-eo" onclick="switchLanguage('eo')">EO</button>
+                    <button class="lang-btn" id="btn-lv" onclick="switchLanguage('lv')">LV</button>
                 </div>
             </div>
         </header>
@@ -751,6 +792,7 @@
                 <span class="language-en">Today</span>
                 <span class="language-ru">Сегодня</span>
                 <span class="language-eo">Hodiaŭ</span>
+                <span class="language-lv">Šodien</span>
             </div>
             <div class="today-badge">
                 <span class="pulse-dot"></span>
@@ -758,6 +800,7 @@
                     <span class="language-en">Day</span>
                     <span class="language-ru">День</span>
                     <span class="language-eo">Tago</span>
+                    <span class="language-lv">Diena</span>
                     <span id="today-day-number">—</span>
                 </span>
             </div>
@@ -772,11 +815,13 @@
                         <span class="language-en">Day 1</span>
                         <span class="language-ru">День 1</span>
                         <span class="language-eo">Tago 1</span>
+                        <span class="language-lv">Diena 1</span>
                     </h2>
                     <span class="day-type-tag">
                         <span class="language-en">Push</span>
                         <span class="language-ru">Жим</span>
                         <span class="language-eo">Puŝo</span>
+                        <span class="language-lv">Grūšana</span>
                     </span>
                 </div>
                 <div class="exercises">
@@ -787,17 +832,20 @@
                                 <span class="language-en">Must</span>
                                 <span class="language-ru">Обяз</span>
                                 <span class="language-eo">Nepre</span>
+                                <span class="language-lv">Obligāti</span>
                             </span>
                             <div class="exercise-names">
                                 <div class="exercise-home">
                                     <span class="language-en">Push-ups</span>
                                     <span class="language-ru">Отжимания</span>
                                     <span class="language-eo">Premleviĝoj</span>
+                                    <span class="language-lv">Atspiešanās</span>
                                 </div>
                                 <div class="exercise-gym">
                                     <span class="language-en">Bench press</span>
                                     <span class="language-ru">Жим лёжа</span>
                                     <span class="language-eo">Benka Premo</span>
+                                    <span class="language-lv">Krūšu preses</span>
                                 </div>
                             </div>
                         </div>
@@ -817,17 +865,20 @@
                                 <span class="language-en">Must</span>
                                 <span class="language-ru">Обяз</span>
                                 <span class="language-eo">Nepre</span>
+                                <span class="language-lv">Obligāti</span>
                             </span>
                             <div class="exercise-names">
                                 <div class="exercise-home">
                                     <span class="language-en">Squats / Lunges</span>
                                     <span class="language-ru">Приседания / Лангс</span>
                                     <span class="language-eo">Skvatoj / Lunĝoj</span>
+                                    <span class="language-lv">Pietupieni / Izpanti</span>
                                 </div>
                                 <div class="exercise-gym">
                                     <span class="language-en">Leg Press</span>
                                     <span class="language-ru">Жим ногами</span>
                                     <span class="language-eo">Krura Premo</span>
+                                    <span class="language-lv">Kāju preses</span>
                                 </div>
                             </div>
                         </div>
@@ -844,17 +895,20 @@
                                 <span class="language-en">Should</span>
                                 <span class="language-ru">Желат</span>
                                 <span class="language-eo">Prefere</span>
+                                <span class="language-lv">Vēlams</span>
                             </span>
                             <div class="exercise-names">
                                 <div class="exercise-home">
                                     <span class="language-en">Dips</span>
                                     <span class="language-ru">Брусья</span>
                                     <span class="language-eo">Tremensoj</span>
+                                    <span class="language-lv">Dippi</span>
                                 </div>
                                 <div class="exercise-gym">
                                     <span class="language-en">Triceps Push</span>
                                     <span class="language-ru">Трицепс Жим</span>
                                     <span class="language-eo">Tricepsa Premo</span>
+                                    <span class="language-lv">Tricepsa preses</span>
                                 </div>
                             </div>
                         </div>
@@ -871,17 +925,20 @@
                                 <span class="language-en">Can</span>
                                 <span class="language-ru">Опц</span>
                                 <span class="language-eo">Eblas</span>
+                                <span class="language-lv">Var</span>
                             </span>
                             <div class="exercise-names">
                                 <div class="exercise-home">
                                     <span class="language-en">Pike Pushups</span>
                                     <span class="language-ru">Пайк Отжимания</span>
                                     <span class="language-eo">Pikaj Premleviĝoj</span>
+                                    <span class="language-lv">Pika atspiešanās</span>
                                 </div>
                                 <div class="exercise-gym">
                                     <span class="language-en">Shoulder Press</span>
                                     <span class="language-ru">Жим плечами</span>
                                     <span class="language-eo">Ŝultra Premo</span>
+                                    <span class="language-lv">Plecu preses</span>
                                 </div>
                             </div>
                         </div>
@@ -902,17 +959,20 @@
                         <span class="language-en">Day 0</span>
                         <span class="language-ru">День 0</span>
                         <span class="language-eo">Tago 0</span>
+                        <span class="language-lv">Diena 0</span>
                     </h2>
                     <span class="day-type-tag">
                         <span class="language-en">Rest</span>
                         <span class="language-ru">Отдых</span>
                         <span class="language-eo">Ripozo</span>
+                        <span class="language-lv">Atpūta</span>
                     </span>
                 </div>
                 <div class="rest-content">
                     <span class="language-en">Rest or make up missed sessions. You can also do cardio.</span>
                     <span class="language-ru">Отдых или долги. Можно сделать кардио.</span>
                     <span class="language-eo">Ripozu aŭ kompensu mankantajn sesiojn. Vi ankaŭ povas fari kardion.</span>
+                    <span class="language-lv">Atpūties vai kompensē nokavētos treniņus. Vari arī darīt kardio.</span>
                 </div>
             </section>
 
@@ -923,11 +983,13 @@
                         <span class="language-en">Day 2</span>
                         <span class="language-ru">День 2</span>
                         <span class="language-eo">Tago 2</span>
+                        <span class="language-lv">Diena 2</span>
                     </h2>
                     <span class="day-type-tag">
                         <span class="language-en">Pull</span>
                         <span class="language-ru">Тяга</span>
                         <span class="language-eo">Tiro</span>
+                        <span class="language-lv">Vilkšana</span>
                     </span>
                 </div>
                 <div class="exercises">
@@ -938,17 +1000,20 @@
                                 <span class="language-en">Must</span>
                                 <span class="language-ru">Обяз</span>
                                 <span class="language-eo">Nepre</span>
+                                <span class="language-lv">Obligāti</span>
                             </span>
                             <div class="exercise-names">
                                 <div class="exercise-home">
                                     <span class="language-en">Pull ups</span>
                                     <span class="language-ru">Подтягивания</span>
                                     <span class="language-eo">Tirleviĝoj</span>
+                                    <span class="language-lv">Pievilkšanās</span>
                                 </div>
                                 <div class="exercise-gym">
                                     <span class="language-en">Lat Pulldowns</span>
                                     <span class="language-ru">Тяга сверху</span>
                                     <span class="language-eo">Dorsaj Tiroj</span>
+                                    <span class="language-lv">Muguras vilkšana</span>
                                 </div>
                             </div>
                         </div>
@@ -968,17 +1033,20 @@
                                 <span class="language-en">Must</span>
                                 <span class="language-ru">Обяз</span>
                                 <span class="language-eo">Nepre</span>
+                                <span class="language-lv">Obligāti</span>
                             </span>
                             <div class="exercise-names">
                                 <div class="exercise-home">
                                     <span class="language-en">Leg Raises</span>
                                     <span class="language-ru">Подъемы ног</span>
                                     <span class="language-eo">Kruraj Levoj</span>
+                                    <span class="language-lv">Kāju celšana</span>
                                 </div>
                                 <div class="exercise-gym">
                                     <span class="language-en">Abs Crunches</span>
                                     <span class="language-ru">Скручивания</span>
                                     <span class="language-eo">Abdomenaj Fleksoj</span>
+                                    <span class="language-lv">Vēdera preses</span>
                                 </div>
                             </div>
                         </div>
@@ -995,17 +1063,20 @@
                                 <span class="language-en">Should</span>
                                 <span class="language-ru">Желат</span>
                                 <span class="language-eo">Prefere</span>
+                                <span class="language-lv">Vēlams</span>
                             </span>
                             <div class="exercise-names">
                                 <div class="exercise-home">
                                     <span class="language-en">Australian Pullups</span>
                                     <span class="language-ru">Австралийские подтягивания</span>
                                     <span class="language-eo">Aŭstraliaj Tiroj</span>
+                                    <span class="language-lv">Austrāliešu pievilkšanās</span>
                                 </div>
                                 <div class="exercise-gym">
                                     <span class="language-en">Cable Pulls</span>
                                     <span class="language-ru">Тяга троса</span>
                                     <span class="language-eo">Ŝnura Tiro</span>
+                                    <span class="language-lv">Kabeļa vilkšana</span>
                                 </div>
                             </div>
                         </div>
@@ -1022,17 +1093,20 @@
                                 <span class="language-en">Can</span>
                                 <span class="language-ru">Опц</span>
                                 <span class="language-eo">Eblas</span>
+                                <span class="language-lv">Var</span>
                             </span>
                             <div class="exercise-names">
                                 <div class="exercise-home">
                                     <span class="language-en">Biceps Curls</span>
                                     <span class="language-ru">Сгибание на бицепс</span>
                                     <span class="language-eo">Bicepsaj Fleksoj</span>
+                                    <span class="language-lv">Bicepsa locīšana</span>
                                 </div>
                                 <div class="exercise-gym">
                                     <span class="language-en">Biceps Curls</span>
                                     <span class="language-ru">Сгибание на бицепс</span>
                                     <span class="language-eo">Bicepsaj Fleksoj</span>
+                                    <span class="language-lv">Bicepsa locīšana</span>
                                 </div>
                             </div>
                         </div>
@@ -1053,17 +1127,20 @@
                         <span class="language-en">Day 0</span>
                         <span class="language-ru">День 0</span>
                         <span class="language-eo">Tago 0</span>
+                        <span class="language-lv">Diena 0</span>
                     </h2>
                     <span class="day-type-tag">
                         <span class="language-en">Rest</span>
                         <span class="language-ru">Отдых</span>
                         <span class="language-eo">Ripozo</span>
+                        <span class="language-lv">Atpūta</span>
                     </span>
                 </div>
                 <div class="rest-content">
                     <span class="language-en">Rest or make up missed sessions. You can also do cardio.</span>
                     <span class="language-ru">Отдых или долги. Можно сделать кардио.</span>
                     <span class="language-eo">Ripozu aŭ kompensu mankantajn sesiojn. Vi ankaŭ povas fari kardion.</span>
+                    <span class="language-lv">Atpūties vai kompensē nokavētos treniņus. Vari arī darīt kardio.</span>
                 </div>
             </section>
 
@@ -1071,6 +1148,7 @@
                 <span class="language-en">Advanced</span>
                 <span class="language-ru">Настройки</span>
                 <span class="language-eo">Altnivela</span>
+                <span class="language-lv">Papildu</span>
             </button>
 
         </main>
@@ -1081,6 +1159,7 @@
                     <span class="language-en">Advanced</span>
                     <span class="language-ru">Настройки</span>
                     <span class="language-eo">Altnivela</span>
+                    <span class="language-lv">Papildu</span>
                 </div>
                 <div class="modal-actions">
                     <div class="offset-row">
@@ -1088,6 +1167,7 @@
                             <span class="language-en">Offset day count</span>
                             <span class="language-ru">Смещение дней</span>
                             <span class="language-eo">Kompensita tagkalkulo</span>
+                            <span class="language-lv">Dienas nobīde</span>
                         </span>
                         <div class="offset-control">
                             <button class="offset-btn" onclick="changeOffset(-1)">−</button>
@@ -1095,15 +1175,31 @@
                             <button class="offset-btn" onclick="changeOffset(1)">+</button>
                         </div>
                     </div>
+                    <div class="lang-vis-row">
+                        <span>
+                            <span class="language-en">Toggle visibility</span>
+                            <span class="language-ru">Видимость кнопок</span>
+                            <span class="language-eo">Videbleco</span>
+                            <span class="language-lv">Redzamība</span>
+                        </span>
+                        <div class="lang-vis-checks">
+                            <label class="lang-vis-label"><input type="checkbox" id="langcheck-en" onchange="toggleLangVisibility('en')"> EN</label>
+                            <label class="lang-vis-label"><input type="checkbox" id="langcheck-ru" onchange="toggleLangVisibility('ru')"> RU</label>
+                            <label class="lang-vis-label"><input type="checkbox" id="langcheck-eo" onchange="toggleLangVisibility('eo')"> EO</label>
+                            <label class="lang-vis-label"><input type="checkbox" id="langcheck-lv" onchange="toggleLangVisibility('lv')"> LV</label>
+                        </div>
+                    </div>
                     <button class="btn-danger" onclick="clearAll()">
                         <span class="language-en">Clear all</span>
                         <span class="language-ru">Очистить всё</span>
                         <span class="language-eo">Forviŝi ĉion</span>
+                        <span class="language-lv">Notīrīt visu</span>
                     </button>
                     <button class="btn-ghost" onclick="closeAdvanced()">
                         <span class="language-en">Cancel</span>
                         <span class="language-ru">Отмена</span>
                         <span class="language-eo">Nuligi</span>
+                        <span class="language-lv">Atcelt</span>
                     </button>
                 </div>
             </div>
@@ -1114,17 +1210,20 @@
                 <span class="language-en">Install Sport Tracker for faster offline access.</span>
                 <span class="language-ru">Установить Sport Tracker для быстрого офлайн-доступа.</span>
                 <span class="language-eo">Instali Sport Tracker por pli rapida senreta aliro.</span>
+                <span class="language-lv">Instalēt Sport Tracker ātrākai bezsaistes piekļuvei.</span>
             </div>
             <div class="pwa-banner-actions">
                 <button class="pwa-banner-dismiss" onclick="hidePwaBanner('pwa-install-banner')">
                     <span class="language-en">Not now</span>
                     <span class="language-ru">Не сейчас</span>
                     <span class="language-eo">Ne nun</span>
+                    <span class="language-lv">Ne tagad</span>
                 </button>
                 <button class="pwa-banner-btn" onclick="installPwa()">
                     <span class="language-en">Install</span>
                     <span class="language-ru">Установить</span>
                     <span class="language-eo">Instali</span>
+                    <span class="language-lv">Instalēt</span>
                 </button>
             </div>
         </div>
@@ -1134,17 +1233,20 @@
                 <span class="language-en">A new version is ready.</span>
                 <span class="language-ru">Новая версия готова.</span>
                 <span class="language-eo">Nova versio estas preta.</span>
+                <span class="language-lv">Jauna versija ir gatava.</span>
             </div>
             <div class="pwa-banner-actions">
                 <button class="pwa-banner-dismiss" onclick="hidePwaBanner('pwa-update-banner')">
                     <span class="language-en">Later</span>
                     <span class="language-ru">Позже</span>
                     <span class="language-eo">Poste</span>
+                    <span class="language-lv">Vēlāk</span>
                 </button>
                 <button class="pwa-banner-btn" onclick="applyPwaUpdate()">
                     <span class="language-en">Update</span>
                     <span class="language-ru">Обновить</span>
                     <span class="language-eo">Ĝisdatigi</span>
+                    <span class="language-lv">Atjaunināt</span>
                 </button>
             </div>
         </div>
@@ -1152,12 +1254,12 @@
         <script>
             function getEffortTag(done, total) {
                 const remaining = total - done;
-                if (done === 0)        return { en: "🦥 Lazy Sloth",          ru: "🦥 Диванный Боец",     eo: "🦥 Pigra Lazulo" };
-                if (done <= 2)         return { en: "🥱 Just Showed Up",       ru: "🥱 Зашёл Поглазеть",  eo: "🥱 Nur Aperis" };
-                if (done < 8)          return { en: "🤷 Half-Hearted Hero",    ru: "🤷 Ну Типа Старался",  eo: "🤷 Duonkora Heroo" };
-                if (remaining > 1)     return { en: "💦 Sweaty Mess",          ru: "💦 Уже Не Позор",      eo: "💦 Ŝvita Malordo" };
-                if (remaining === 1)   return { en: "😤 One More Set, Coward", ru: "😤 Ещё Подход, Слабак", eo: "😤 Ankoraŭ Aro, Timulo" };
-                return                        { en: "🔥 Absolute Unit",        ru: "🔥 Красавчик",          eo: "🔥 Absoluta Unuo" };
+                if (done === 0)        return { en: "🦥 Lazy Sloth",          ru: "🦥 Диванный Боец",     eo: "🦥 Pigra Lazulo",      lv: "🦥 Slinks Kūtris" };
+                if (done <= 2)         return { en: "🥱 Just Showed Up",       ru: "🥱 Зашёл Поглазеть",  eo: "🥱 Nur Aperis",         lv: "🥱 Tikko Ieradās" };
+                if (done < 8)          return { en: "🤷 Half-Hearted Hero",    ru: "🤷 Ну Типа Старался",  eo: "🤷 Duonkora Heroo",     lv: "🤷 Pusīgi Varonīgs" };
+                if (remaining > 1)     return { en: "💦 Sweaty Mess",          ru: "💦 Уже Не Позор",      eo: "💦 Ŝvita Malordo",      lv: "💦 Sviedru Jūklis" };
+                if (remaining === 1)   return { en: "😤 One More Set, Coward", ru: "😤 Ещё Подход, Слабак", eo: "😤 Ankoraŭ Aro, Timulo", lv: "😤 Vēl Sērija, Gļēvuli" };
+                return                        { en: "🔥 Absolute Unit",        ru: "🔥 Красавчик",          eo: "🔥 Absoluta Unuo",      lv: "🔥 Absolūts Čempions" };
             }
 
             function updateEffortTag() {
@@ -1200,10 +1302,10 @@
                 const tag = document.createElement('span');
                 tag.id = 'effort-tag';
                 tag.className = 'effort-tag' + (checked === total ? ' effort-tag--done' : '');
-                tag.innerHTML = `<span class="language-en">${tier.en}</span><span class="language-ru">${tier.ru}</span><span class="language-eo">${tier.eo}</span>`;
+                tag.innerHTML = `<span class="language-en">${tier.en}</span><span class="language-ru">${tier.ru}</span><span class="language-eo">${tier.eo}</span><span class="language-lv">${tier.lv}</span>`;
 
                 const lang = localStorage.getItem('selectedLanguage') || 'en';
-                ["en", "ru", "eo"].forEach(l => {
+                ["en", "ru", "eo", "lv"].forEach(l => {
                     tag.querySelector('.language-' + l).style.display = l === lang ? 'inline' : 'none';
                 });
 
@@ -1282,12 +1384,36 @@
 
             function switchLanguage(language) {
                 localStorage.setItem("selectedLanguage", language);
-                ["en", "ru", "eo"].forEach(lang => {
+                ["en", "ru", "eo", "lv"].forEach(lang => {
                     const display = lang === language ? "inline" : "none";
                     document.querySelectorAll(".language-" + lang).forEach(el => el.style.display = display);
                     document.getElementById("btn-" + lang).classList.toggle("active", lang === language);
                 });
+                updateLangCheckboxes();
                 updateEffortTag();
+            }
+
+            function applyLangVisibility() {
+                ["en", "ru", "eo", "lv"].forEach(lang => {
+                    const visible = localStorage.getItem('langVisible_' + lang) !== 'false';
+                    document.getElementById('btn-' + lang).style.display = visible ? '' : 'none';
+                });
+            }
+
+            function updateLangCheckboxes() {
+                const active = localStorage.getItem('selectedLanguage') || 'en';
+                ["en", "ru", "eo", "lv"].forEach(lang => {
+                    const cb = document.getElementById('langcheck-' + lang);
+                    if (!cb) return;
+                    cb.checked = localStorage.getItem('langVisible_' + lang) !== 'false';
+                    cb.disabled = lang === active;
+                });
+            }
+
+            function toggleLangVisibility(lang) {
+                const cb = document.getElementById('langcheck-' + lang);
+                localStorage.setItem('langVisible_' + lang, cb.checked);
+                applyLangVisibility();
             }
 
             function saveCheckboxState(checkbox) {
@@ -1338,6 +1464,7 @@
 
             function openAdvanced() {
                 document.getElementById("advanced-modal").classList.add("open");
+                updateLangCheckboxes();
             }
 
             function closeAdvanced() {
@@ -1348,7 +1475,7 @@
                 Object.keys(localStorage)
                     .filter(key => /^\d{4}-\d{2}-\d{2}__/.test(key))
                     .forEach(key => localStorage.removeItem(key));
-                document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                document.querySelectorAll('.set-checkbox').forEach(cb => {
                     cb.checked = false;
                     cb.disabled = false;
                 });
@@ -1362,8 +1489,9 @@
                 restoreLanguage();
                 restoreOffset();
                 applyProgramDay();
+                applyLangVisibility();
 
-                document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+                document.querySelectorAll('.set-checkbox').forEach((checkbox) => {
                     checkbox.addEventListener("change", (e) => {
                         saveCheckboxState(e.target);
                         updateEffortTag();
